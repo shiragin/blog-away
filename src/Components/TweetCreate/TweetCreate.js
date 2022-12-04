@@ -14,9 +14,9 @@ function TweetCreate(props) {
   function buttonClickHandler() {
     const newTweet = {
       id: nanoid(),
-      text: tweet,
-      date: new Date().toDateString(),
-      user: 'Stina Stinok',
+      content: tweet,
+      date: new Date().toISOString(),
+      userName: 'Shira',
     };
     props.onTweetSave(newTweet);
     setTweet('');

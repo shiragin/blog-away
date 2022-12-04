@@ -4,8 +4,10 @@ import './TweetList.css';
 function TweetList({ tweets }) {
   return (
     <div className="mt-4 tweet-list d-flex flex-column gap-3 w-75">
-      {tweets.map(({ id, user, date, text }) => {
-        return <Tweet key={id} user={user} date={date} text={text} />;
+      {tweets.map(({ id, userName, date, content }) => {
+        return (
+          <Tweet key={id} userName={userName} date={date} content={content} />
+        );
       })}
     </div>
   );

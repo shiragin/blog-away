@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import localforage from 'localforage';
+import axios from 'axios';
 import TweetCreate from './Components/TweetCreate/TweetCreate';
 import TweetList from './Components/TweetList/TweetList';
 import './App.css';
@@ -7,10 +8,19 @@ import './App.css';
 function App() {
   const [tweets, setTweets] = useState([]);
 
-  function fetchData() {
-    localforage.getItem('tweets').then((res) => {
-      setTweets(res ? res : []);
-    });
+  async function fetchData() {
+    try {
+      const res = await axios.get(
+        `https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet`
+      );
+      setTweets(res.data.tweets);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function saveData() {
+    console.log(tweets);
   }
 
   useEffect(() => {
@@ -18,13 +28,24 @@ function App() {
   }, []);
 
   useEffect(() => {
-    localforage.setItem('tweets', tweets);
+    saveData();
   }, [tweets]);
 
-  function tweetSaveHandler(newTweet) {
-    setTweets((prevTweets) => {
-      return [newTweet, ...prevTweets];
-    });
+  async function tweetSaveHandler({ userName, date, content }) {
+    // setTweets((prevTweets) => {
+    //   return [newTweet, ...prevTweets];
+    // });
+    console.log({ userName, date, content });
+    const response = await axios.post(
+      'https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet',
+      {
+        content: content,
+        userName: userName,
+        date: date,
+      }
+    );
+    console.log(response.data);
+    fetchData();
   }
 
   return (
