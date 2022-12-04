@@ -7,6 +7,9 @@ import './App.css';
 function App() {
   const [tweets, setTweets] = useState([]);
   const [error, setError] = useState('');
+  // const [loading, setLoading] = useState(false);
+
+  // console.log(loading);
 
   async function fetchData() {
     try {
@@ -28,7 +31,7 @@ function App() {
       const response = await axios.post(
         'https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet',
         {
-          content: content,
+          conent: content,
           userName: userName,
           date: date,
         }

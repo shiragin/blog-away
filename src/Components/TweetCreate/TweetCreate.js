@@ -5,20 +5,18 @@ import Alert from 'react-bootstrap/alert';
 import Form from 'react-bootstrap/Form';
 import './TweetCreate.css';
 
-function TweetCreate(props) {
+function TweetCreate({ error, ...props }) {
+  console.log(props);
   const [tweet, setTweet] = useState('');
-  const [errorMsg, setErrorMsg] = useState(props.error);
-  // const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(error);
 
-  useEffect(() => setErrorMsg(props.error), []);
+  useEffect(() => setErrorMsg(error), [props.onTweetSave]);
 
-  console.log('Error: ', props.error);
-  console.log('ErrorMsg: ', errorMsg);
   function tweetChangeHandler(e) {
     setErrorMsg('');
     setTweet(e.target.value);
     e.target.value.length > 140 &&
-      setErrorMsg("The tweet can't contain more then 140 chars");
+      setErrorMsg("The tweet can't contain more than 140 chars");
   }
 
   function buttonClickHandler() {
@@ -29,9 +27,10 @@ function TweetCreate(props) {
       userName: 'Shira',
     };
     props.onTweetSave(newTweet);
-    setErrorMsg(props.error);
-    props.error || setTweet('');
+    setErrorMsg(error);
+    error || setTweet('');
   }
+
   return (
     <Form className="new-tweet-form w-75 d-flex flex-column">
       <Form.Control
@@ -40,6 +39,7 @@ function TweetCreate(props) {
         placeholder="What you have in mind..."
         value={tweet}
         onChange={tweetChangeHandler}
+        onFocus={() => setErrorMsg('')}
       />
       <div className="w-100 d-flex justify-content-between align-items-center">
         {errorMsg ? (
