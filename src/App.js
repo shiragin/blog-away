@@ -7,18 +7,19 @@ import './App.css';
 function App() {
   const [tweets, setTweets] = useState([]);
   const [error, setError] = useState('');
-  // const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // console.log(loading);
-
+  // Fetch tweets from server
   async function fetchData() {
     try {
+      setIsLoading(true);
       const res = await axios.get(
         `https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet`
       );
       setTweets(res?.data?.tweets);
+      setIsLoading(false);
     } catch (err) {
-      console.log(err);
+      setError(error.message);
     }
   }
 
@@ -26,26 +27,34 @@ function App() {
     fetchData();
   }, []);
 
+  // Saves new tweet to server
   async function tweetSaveHandler({ userName, date, content }) {
     try {
-      const response = await axios.post(
+      setIsLoading(true);
+      await axios.post(
         'https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet',
         {
-          conent: content,
+          content: content,
           userName: userName,
           date: date,
         }
       );
       fetchData();
       setError('');
+      setIsLoading(false);
     } catch (error) {
       setError(error.message);
+      setIsLoading(false);
     }
   }
 
   return (
     <div className="container d-flex flex-column align-items-center my-4">
-      <TweetCreate onTweetSave={tweetSaveHandler} error={error} />
+      <TweetCreate
+        onTweetSave={tweetSaveHandler}
+        error={error}
+        isLoading={isLoading}
+      />
       <TweetList tweets={tweets} error={error} />
     </div>
   );

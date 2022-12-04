@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
-import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/alert';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
+import Button from 'react-bootstrap/Button';
 import './TweetCreate.css';
 
-function TweetCreate({ error, ...props }) {
-  console.log(props);
+function TweetCreate({ error, isLoading, ...props }) {
   const [tweet, setTweet] = useState('');
   const [errorMsg, setErrorMsg] = useState(error);
 
+  // Updates error message whenever a tweet is submitted
   useEffect(() => setErrorMsg(error), [props.onTweetSave]);
 
+  // Tracks tweet's content and length + error msg if it's too long
   function tweetChangeHandler(e) {
     setErrorMsg('');
     setTweet(e.target.value);
@@ -19,6 +21,7 @@ function TweetCreate({ error, ...props }) {
       setErrorMsg("The tweet can't contain more than 140 chars");
   }
 
+  // Creates a new tweet object on submits and sends to app + resets error msg and textarea content
   function buttonClickHandler() {
     const newTweet = {
       id: nanoid(),
@@ -49,14 +52,16 @@ function TweetCreate({ error, ...props }) {
         ) : (
           <div />
         )}
-
-        <Button
-          className="new-tweet-button justify-self-end"
-          disabled={tweet.length > 140 ? true : false}
-          onClick={buttonClickHandler}
-        >
-          Tweet
-        </Button>
+        <div className="d-flex align-items-center gap-2">
+          {isLoading && <Spinner animation="border" variant="primary" />}
+          <Button
+            className="new-tweet-button justify-self-end"
+            disabled={tweet.length > 140 ? true : false}
+            onClick={buttonClickHandler}
+          >
+            Tweet
+          </Button>
+        </div>
       </div>
     </Form>
   );
