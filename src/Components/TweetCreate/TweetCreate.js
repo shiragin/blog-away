@@ -31,7 +31,11 @@ function TweetCreate(props) {
         value={tweet}
         onChange={tweetChangeHandler}
       />
-      <Button className="new-tweet-button" onClick={buttonClickHandler}>
+      <Button
+        disabled={tweet.length > 140 ? true : false}
+        className="new-tweet-button"
+        onClick={buttonClickHandler}
+      >
         Tweet
       </Button>
     </Form>
