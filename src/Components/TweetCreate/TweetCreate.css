@@ -1,0 +1,28 @@
+.new-tweet-form {
+  background-color: var(--dark);
+  border-radius: 5px;
+  border: 1px solid var(--offwhite);
+  padding: 1rem;
+  min-height: 200px;
+}
+
+.new-tweet-input,
+.new-tweet-input:focus,
+.new-tweet-input:active {
+  background-color: var(--dark);
+  color: var(--white);
+  border: none;
+  resize: none;
+  padding: 0;
+  height: 100%;
+  box-shadow: none;
+  letter-spacing: 0.8px;
+}
+
+.new-tweet-input::placeholder {
+  color: var(--offwhite);
+}
+
+.new-tweet-button {
+  background-color: var(--blue);
+}
