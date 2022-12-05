@@ -55,7 +55,7 @@ function TweetCreate({ error, isLoading, ...props }) {
           {isLoading && <Spinner animation="border" variant="primary" />}
           <Button
             className="new-tweet-button justify-self-end"
-            disabled={tweet.length > 140 ? true : false}
+            disabled={tweet.length > 140 || isLoading ? true : false}
             onClick={buttonClickHandler}
           >
             Tweet
