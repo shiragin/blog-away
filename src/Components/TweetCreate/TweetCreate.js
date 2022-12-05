@@ -27,7 +27,6 @@ function TweetCreate({ error, isLoading, ...props }) {
       id: nanoid(),
       content: tweet,
       date: new Date().toISOString(),
-      userName: 'Shira',
     };
     props.onTweetSave(newTweet);
     setErrorMsg(error);

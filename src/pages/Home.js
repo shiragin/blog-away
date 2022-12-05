@@ -3,11 +3,33 @@ import axios from 'axios';
 import TweetCreate from './../Components/TweetCreate/TweetCreate';
 import TweetList from './../Components/TweetList/TweetList';
 import './../App.css';
+import { useSearchParams } from 'react-router-dom';
 
 function Home() {
   const [tweets, setTweets] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Receives new username from user page
+  const [searchparams] = useSearchParams();
+  const enteredName = searchparams.get('userName');
+
+  // Handle name change & fetch from local storage
+  const [userName, setUserName] = useState('');
+
+  // useEffect(() => {
+
+  // }, []);
+
+  console.log(enteredName, userName);
+
+  console.log(JSON.parse(localStorage.getItem('username')));
+
+  // Sets new name to server on change
+  useEffect(() => {
+    enteredName &&
+      localStorage.setItem('username', JSON.stringify(enteredName));
+  }, [enteredName]);
 
   // Fetch tweets from server
   async function fetchData() {
@@ -23,14 +45,18 @@ function Home() {
     }
   }
 
+  // Call to fetch username and tweets from server
+
   useEffect(() => {
+    const storedName = JSON.parse(localStorage.getItem('username'));
+    storedName && setUserName(storedName);
     fetchData();
   }, []);
 
   // Saves new tweet to server
-  async function tweetSaveHandler({ userName, date, content }) {
+  async function tweetSaveHandler({ date, content }) {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       await axios.post(
         'https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet',
         {
