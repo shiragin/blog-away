@@ -1,15 +1,19 @@
+import { Outlet, Link } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
   return (
-    <div className="navbar d-flex justify-content-start gap-5">
-      <a href="#" className="navbar-link active">
-        Home
-      </a>
-      <a href="#" className="navbar-link">
-        Profile
-      </a>
-    </div>
+    <>
+      <ul className="navbar d-flex justify-content-start gap-5">
+        <li className="navbar-link active">
+          <Link to="/">Home</Link>
+        </li>
+        <li className="navbar-link">
+          <Link to="/user">User</Link>
+        </li>
+      </ul>
+      <Outlet />
+    </>
   );
 }
 

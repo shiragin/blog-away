@@ -8,7 +8,7 @@ import './TweetCreate.css';
 
 function TweetCreate({ error, isLoading, ...props }) {
   const [tweet, setTweet] = useState('');
-  const [errorMsg, setErrorMsg] = useState(error);
+  const [errorMsg, setErrorMsg] = useState('');
 
   // Updates error message whenever a tweet is submitted
   useEffect(() => setErrorMsg(error), [props.onTweetSave]);

@@ -17,6 +17,7 @@
   height: 100%;
   box-shadow: none;
   letter-spacing: 0.6px;
+  margin-bottom: 1rem;
 }
 
 .new-tweet-input::placeholder {
