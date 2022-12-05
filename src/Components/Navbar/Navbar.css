@@ -8,6 +8,10 @@
   padding: 1rem 1.5rem;
 }
 
+.active {
+  color: var(--white);
+}
+
 .navbar-link,
 .navbar-link a,
 .navbar-link:visited,

@@ -17,14 +17,6 @@ function Home() {
   // Handle name change & fetch from local storage
   const [userName, setUserName] = useState('');
 
-  // useEffect(() => {
-
-  // }, []);
-
-  console.log(enteredName, userName);
-
-  console.log(JSON.parse(localStorage.getItem('username')));
-
   // Sets new name to server on change
   useEffect(() => {
     enteredName &&
