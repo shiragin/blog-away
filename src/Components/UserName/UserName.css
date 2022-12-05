@@ -1,0 +1,25 @@
+.name-form {
+  background-color: var(--dark);
+  color: var(--white);
+}
+
+.name-title {
+  margin-bottom: 2rem;
+}
+
+.name-label {
+  margin-bottom: 0.8rem;
+}
+
+.name-input {
+  background-color: var(--dark);
+  color: var(--white);
+  border-radius: 0.375rem;
+  margin-bottom: 0.8rem;
+  padding: 1rem 1.5rem;
+}
+
+.name-submit-button {
+  width: fit-content;
+  align-self: flex-end;
+}

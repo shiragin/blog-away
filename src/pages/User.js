@@ -1,7 +1,9 @@
+import UserName from '../Components/UserName/UserName';
+
 function User() {
   return (
     <div className="container d-flex flex-column align-items-center my-4">
-      <h1 style={{ color: '#fff' }}>Wow, it worked!</h1>
+      <UserName />
     </div>
   );
 }
