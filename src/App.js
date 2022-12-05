@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import TweetCreate from './Components/TweetCreate/TweetCreate';
 import TweetList from './Components/TweetList/TweetList';
+import Navbar from './Components/Navbar/Navbar';
 import './App.css';
 
 function App() {
@@ -49,13 +50,16 @@ function App() {
   }
 
   return (
-    <div className="container d-flex flex-column align-items-center my-4">
-      <TweetCreate
-        onTweetSave={tweetSaveHandler}
-        error={error}
-        isLoading={isLoading}
-      />
-      <TweetList tweets={tweets} error={error} />
+    <div className="w-100">
+      <Navbar />
+      <div className="container d-flex flex-column align-items-center my-4">
+        <TweetCreate
+          onTweetSave={tweetSaveHandler}
+          error={error}
+          isLoading={isLoading}
+        />
+        <TweetList tweets={tweets} error={error} />
+      </div>
     </div>
   );
 }
