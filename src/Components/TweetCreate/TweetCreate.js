@@ -39,7 +39,7 @@ function TweetCreate({ error, isLoading, ...props }) {
       <Form.Control
         as="textarea"
         className="new-tweet-input flex-fill"
-        placeholder="What you have in mind..."
+        placeholder="Say what's on your mind..."
         value={tweet}
         onChange={tweetChangeHandler}
         onFocus={() => setErrorMsg('')}
