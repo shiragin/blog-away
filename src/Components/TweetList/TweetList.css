@@ -3,10 +3,23 @@
   border-radius: 0.375rem;
   padding: 1.4rem;
   height: fit-content;
+  word-wrap: break-word;
 }
 
 .tweet-header {
   color: var(--grey-text);
+  flex-wrap: wrap;
+}
+
+.tweet-username {
+  word-wrap: break-word;
+  flex-wrap: wrap;
+  max-width: 45%;
+}
+
+.tweet-date {
+  max-width: 45%;
+  text-align: right;
 }
 
 .tweet-text {

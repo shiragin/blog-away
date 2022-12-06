@@ -9,7 +9,7 @@ function Tweet() {
       key={id}
       className="tweet-card d-flex flex-column justify-content-center"
     >
-      <div className="tweet-header d-flex justify-content-between align-items-center">
+      <div className="tweet-header d-flex justify-content-between align-items-start">
         <p className="tweet-username">{userName}</p>
         <p className="tweet-date">{date}</p>
       </div>

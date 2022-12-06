@@ -3,7 +3,7 @@ import './Navbar.css';
 import Home from '../../pages/Home';
 import User from '../../pages/Profile';
 
-function Navbar({ to, title }) {
+function Navbar() {
   return (
     <>
       <ul className="navbar d-flex justify-content-start gap-5">

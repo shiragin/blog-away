@@ -17,8 +17,6 @@ function Home() {
     setUserName,
   } = useContext(MainContext);
 
-  console.log(userName);
-
   // Fetch tweets from server
   async function fetchData() {
     try {
@@ -52,42 +50,11 @@ function Home() {
     };
   }, []);
 
-  // Saves new tweet to server
-  async function tweetSaveHandler({ date, content }) {
-    setIsLoading(true);
-    try {
-      await axios.post(
-        'https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet',
-        {
-          content: content,
-          userName: userName,
-          date: date,
-        }
-      );
-      setError('');
-      setIsLoading(false);
-    } catch (error) {
-      setError(error.message);
-      setIsLoading(false);
-    }
-  }
-
   return (
-    <MainContext.Provider
-      value={{
-        tweets,
-        setTweets,
-        error,
-        tweetSaveHandler,
-        isLoading,
-        userName,
-      }}
-    >
-      <div className="container d-flex flex-column align-items-center my-4">
-        <TweetCreate />
-        <TweetList />
-      </div>
-    </MainContext.Provider>
+    <div className="container d-flex flex-column align-items-center my-4">
+      <TweetCreate />
+      <TweetList />
+    </div>
   );
 }
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import axios from 'axios';
 import { MainContext } from './lib/MainContext';
 import Navbar from './Components/Navbar/Navbar';
 import Home from './pages/Home';
@@ -12,8 +13,29 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [userName, setUserName] = useState('');
 
+  // Saves new name
   function nameSaveHandler(userName) {
     setUserName(userName);
+  }
+
+  // Saves new tweet to server
+  async function tweetSaveHandler({ date, content }) {
+    setIsLoading(true);
+    try {
+      await axios.post(
+        'https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet',
+        {
+          content: content,
+          userName: userName,
+          date: date,
+        }
+      );
+      setError('');
+      setIsLoading(false);
+    } catch (error) {
+      setError(error.message);
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -26,7 +48,7 @@ function App() {
         userName,
         setUserName,
         nameSaveHandler,
-        // tweetSaveHandler,
+        tweetSaveHandler,
         isLoading,
         setIsLoading,
       }}
