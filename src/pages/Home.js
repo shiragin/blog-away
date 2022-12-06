@@ -49,9 +49,13 @@ function Home() {
   // Set interval to fetch data
 
   useEffect(() => {
-    setInterval(() => {
+    const interval = setInterval(() => {
       fetchData();
+      console.log('fetching');
     }, 10000);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   // Saves new tweet to server
