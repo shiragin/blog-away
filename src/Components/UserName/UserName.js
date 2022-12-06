@@ -23,7 +23,7 @@ function UserName(props) {
           onChange={nameChangeHandler}
           className="name-input"
           type="text"
-          placeholder="Say your name..."
+          placeholder={userName ? userName : 'Say your name...'}
         />
       </Form.Group>
       <Button

@@ -10,7 +10,10 @@ function TweetList() {
     <div className="mt-4 tweet-list d-flex flex-column gap-3 w-75">
       {tweets.map(({ id, userName, date, content }) => {
         return (
-          <MainContext.Provider value={{ userName, date, id, content }}>
+          <MainContext.Provider
+            key={id}
+            value={{ userName, date, id, content }}
+          >
             <Tweet />
           </MainContext.Provider>
         );

@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import UserName from '../Components/UserName/UserName';
 
 function User() {
   const navigate = useNavigate();
+
   function nameSaveHandler(userName) {
     navigate({
       pathname: '/',
