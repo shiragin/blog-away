@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { MainContext } from '../lib/MainContext';
 import axios from 'axios';
 import TweetCreate from './../Components/TweetCreate/TweetCreate';
 import TweetList from './../Components/TweetList/TweetList';
 import './../App.css';
-import { useSearchParams } from 'react-router-dom';
+// import { useSearchParams } from 'react-router-dom';
 
 function Home() {
-  const [tweets, setTweets] = useState([]);
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    tweets,
+    setTweets,
+    isLoading,
+    setIsLoading,
+    error,
+    setError,
+    userName,
+    setUserName,
+  } = useContext(MainContext);
 
-  // Receives new username from user page
-  const [searchparams] = useSearchParams();
-  const enteredName = searchparams.get('userName');
-
-  // Handle name change & fetch from local storage
-  const [userName, setUserName] = useState('');
-
+  console.log(userName);
   // Sets new name to server on change
-  useEffect(() => {
-    enteredName &&
-      localStorage.setItem('username', JSON.stringify(enteredName));
-  }, [enteredName]);
+  // useEffect(() => {
+  //   userName && localStorage.setItem('username', JSON.stringify(userName));
+  // }, [userName]);
 
   // Fetch tweets from server
   async function fetchData() {
@@ -41,8 +41,7 @@ function Home() {
   // Call to fetch username and tweets from server
 
   useEffect(() => {
-    const storedName = JSON.parse(localStorage.getItem('username'));
-    storedName && setUserName(storedName);
+    setUserName(JSON.parse(localStorage.getItem('username')) || userName);
     fetchData();
   }, []);
 

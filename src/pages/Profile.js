@@ -1,22 +1,13 @@
-import { useState } from 'react';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+// import { useState, useContext } from 'react';
+// import { MainContext } from '../lib/MainContext';
 import UserName from '../Components/UserName/UserName';
 
 function User() {
-  const navigate = useNavigate();
-
-  function nameSaveHandler(userName) {
-    navigate({
-      pathname: '/',
-      search: createSearchParams({
-        userName: userName,
-      }).toString(),
-    });
-  }
+  // const { userName, setUserName, nameSaveHandler } = useContext(MainContext);
 
   return (
     <div className="container d-flex flex-column align-items-center my-4">
-      <UserName onNameSave={nameSaveHandler} />
+      <UserName />
     </div>
   );
 }

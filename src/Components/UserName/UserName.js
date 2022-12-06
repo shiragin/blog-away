@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { MainContext } from '../../lib/MainContext';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './UserName.css';
 
-function UserName(props) {
-  const [userName, setUserName] = useState('');
+function UserName() {
+  const {
+    userName,
+    setUserName,
+    nameSaveHandler: onNameSave,
+  } = useContext(MainContext);
 
   function nameChangeHandler(e) {
     setUserName(e.target.value);
   }
 
   function buttonClickHandler() {
-    props.onNameSave(userName);
+    localStorage.setItem('username', JSON.stringify(userName));
+    onNameSave(userName);
   }
 
   return (
@@ -23,7 +29,8 @@ function UserName(props) {
           onChange={nameChangeHandler}
           className="name-input"
           type="text"
-          placeholder={userName ? userName : 'Say your name...'}
+          placeholder={'Say your name...'}
+          value={userName ? userName : ''}
         />
       </Form.Group>
       <Button
