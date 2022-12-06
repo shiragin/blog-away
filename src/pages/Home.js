@@ -35,7 +35,6 @@ function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchData();
-      console.log('fetching');
     }, 10000);
     return () => {
       clearInterval(interval);

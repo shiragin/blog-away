@@ -26,7 +26,7 @@ function App() {
         'https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet',
         {
           content: content,
-          userName: userName,
+          userName: userName ? userName : 'Anonynmous',
           date: date,
         }
       );
