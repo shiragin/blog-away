@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { MainContext } from '../../lib/MainContext';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -15,10 +15,15 @@ function UserName() {
     setUserName(e.target.value);
   }
 
+  // Sets new name locally and to server on change
   function buttonClickHandler() {
     localStorage.setItem('username', JSON.stringify(userName));
     onNameSave(userName);
+    setButtonClicked(!buttonClicked);
   }
+
+  // Handles button text
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   return (
     <Form className="name-form w-75 d-flex flex-column">
@@ -26,6 +31,7 @@ function UserName() {
       <Form.Group>
         <Form.Label className="name-label">User Name</Form.Label>
         <Form.Control
+          onFocus={() => buttonClicked && setButtonClicked(false)}
           onChange={nameChangeHandler}
           className="name-input"
           type="text"
@@ -37,8 +43,9 @@ function UserName() {
         onClick={buttonClickHandler}
         className="name-submit-button"
         variant="primary"
+        disabled={userName.trim(' ').length < 1 ? true : false}
       >
-        Save
+        {buttonClicked ? 'Saved' : 'Save'}
       </Button>
     </Form>
   );

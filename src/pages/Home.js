@@ -4,7 +4,6 @@ import axios from 'axios';
 import TweetCreate from './../Components/TweetCreate/TweetCreate';
 import TweetList from './../Components/TweetList/TweetList';
 import './../App.css';
-// import { useSearchParams } from 'react-router-dom';
 
 function Home() {
   const {
@@ -19,10 +18,6 @@ function Home() {
   } = useContext(MainContext);
 
   console.log(userName);
-  // Sets new name to server on change
-  // useEffect(() => {
-  //   userName && localStorage.setItem('username', JSON.stringify(userName));
-  // }, [userName]);
 
   // Fetch tweets from server
   async function fetchData() {
