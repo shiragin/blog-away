@@ -6,16 +6,8 @@ import TweetList from './../Components/TweetList/TweetList';
 import './../App.css';
 
 function Home() {
-  const {
-    tweets,
-    setTweets,
-    isLoading,
-    setIsLoading,
-    error,
-    setError,
-    userName,
-    setUserName,
-  } = useContext(MainContext);
+  const { setTweets, setIsLoading, setError, userName, setUserName } =
+    useContext(MainContext);
 
   // Fetch tweets from server
   async function fetchData() {

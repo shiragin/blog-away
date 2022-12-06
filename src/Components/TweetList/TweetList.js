@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { nanoid } from 'nanoid';
 import { MainContext } from '../../lib/MainContext';
 import Tweet from './Tweet';
 import './TweetList.css';
@@ -11,7 +12,7 @@ function TweetList() {
       {tweets.map(({ id, userName, date, content }) => {
         return (
           <MainContext.Provider
-            key={id}
+            key={id ? id : nanoid()}
             value={{ userName, date, id, content }}
           >
             <Tweet />

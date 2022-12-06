@@ -8,16 +8,21 @@
 }
 
 .name-label {
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.name-input-box {
+  border: 1px solid var(--offwhite);
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
 }
 
 .name-input {
   background-color: var(--dark);
   color: var(--white);
+  border: none;
   border-radius: 0.375rem;
-  margin-bottom: 0.8rem;
-  padding: 1rem 1.5rem;
-  border: 1px var(--offwhite) solid;
   letter-spacing: 0.6px;
 }
 
@@ -38,5 +43,6 @@
   width: fit-content;
   align-self: flex-end;
   height: 2.4rem;
+  min-width: 5rem;
   background-color: var(--blue);
 }

@@ -34,7 +34,6 @@ function TweetCreate() {
   // Creates a new tweet object on submits and sends to app + resets error msg and textarea content
   function buttonClickHandler() {
     const newTweet = {
-      id: nanoid(),
       userName: userName,
       content: tweet,
       date: new Date().toISOString(),
@@ -67,7 +66,9 @@ function TweetCreate() {
           {isLoading && <Spinner animation="border" variant="primary" />}
           <Button
             className="new-tweet-button justify-self-end"
-            disabled={tweet.length > 140 || isLoading ? true : false}
+            disabled={
+              tweet.length > 140 || tweet.length < 1 || isLoading ? true : false
+            }
             onClick={buttonClickHandler}
           >
             Tweet

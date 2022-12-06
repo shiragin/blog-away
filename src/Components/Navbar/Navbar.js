@@ -1,7 +1,5 @@
-import { Outlet, Link, NavLink } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
 import './Navbar.css';
-import Home from '../../pages/Home';
-import User from '../../pages/Profile';
 
 function Navbar() {
   return (
