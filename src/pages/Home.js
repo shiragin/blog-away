@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TweetsContext } from '../lib/TweetsContext';
+import { MainContext } from '../lib/MainContext';
 import axios from 'axios';
 import TweetCreate from './../Components/TweetCreate/TweetCreate';
 import TweetList from './../Components/TweetList/TweetList';
@@ -79,17 +79,21 @@ function Home() {
   }
 
   return (
-    <TweetsContext.Provider value={{ tweets, setTweets }}>
+    <MainContext.Provider
+      value={{
+        tweets,
+        setTweets,
+        error,
+        tweetSaveHandler,
+        isLoading,
+        userName,
+      }}
+    >
       <div className="container d-flex flex-column align-items-center my-4">
-        <TweetCreate
-          onTweetSave={tweetSaveHandler}
-          error={error}
-          isLoading={isLoading}
-          userName={userName}
-        />
+        <TweetCreate />
         <TweetList />
       </div>
-    </TweetsContext.Provider>
+    </MainContext.Provider>
   );
 }
 

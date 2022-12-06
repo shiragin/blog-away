@@ -1,7 +1,7 @@
 import { Outlet, Link, NavLink } from 'react-router-dom';
 import './Navbar.css';
 import Home from '../../pages/Home';
-import User from '../../pages/User';
+import User from '../../pages/Profile';
 
 function Navbar({ to, title }) {
   return (
@@ -19,12 +19,12 @@ function Navbar({ to, title }) {
         </li>
         <li className="navbar-link">
           <NavLink
-            to="/user"
+            to="/profile"
             style={({ isActive }) => ({
               color: isActive ? 'var(--white)' : 'var(--offwhite)',
             })}
           >
-            User
+            Profile
           </NavLink>
         </li>
       </ul>

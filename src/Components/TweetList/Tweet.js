@@ -1,4 +1,9 @@
-function Tweet({ date, userName, content }) {
+import React, { useContext } from 'react';
+import { MainContext } from '../../lib/MainContext';
+
+function Tweet() {
+  const { userName, date, content } = useContext(MainContext);
+
   return (
     <div className="tweet-card d-flex flex-column justify-content-center">
       <div className="tweet-header d-flex justify-content-between align-items-center">

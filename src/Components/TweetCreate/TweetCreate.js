@@ -5,16 +5,23 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import './TweetCreate.css';
-import { TweetsContext } from '../../lib/TweetsContext';
-import UserName from '../UserName/UserName';
+import { MainContext } from '../../lib/MainContext';
 
-function TweetCreate({ error, isLoading, userName, ...props }) {
+function TweetCreate() {
   const [tweet, setTweet] = useState('');
-  const { tweets, setTweets } = useContext(TweetsContext);
   const [errorMsg, setErrorMsg] = useState('');
 
+  const {
+    tweets,
+    setTweets,
+    error,
+    isLoading,
+    userName,
+    tweetSaveHandler: onTweetSave,
+  } = useContext(MainContext);
+
   // Updates error message whenever a tweet is submitted
-  useEffect(() => setErrorMsg(error), [props.onTweetSave]);
+  useEffect(() => setErrorMsg(error), [onTweetSave]);
 
   // Tracks tweet's content and length + error msg if it's too long
   function tweetChangeHandler(e) {
@@ -32,7 +39,7 @@ function TweetCreate({ error, isLoading, userName, ...props }) {
       content: tweet,
       date: new Date().toISOString(),
     };
-    props.onTweetSave(newTweet);
+    onTweetSave(newTweet);
     setTweets([newTweet, ...tweets]);
     setErrorMsg(error);
     error || setTweet('');
