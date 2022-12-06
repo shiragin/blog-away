@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { TweetsContext } from '../lib/TweetsContext';
 import axios from 'axios';
 import TweetCreate from './../Components/TweetCreate/TweetCreate';
 import TweetList from './../Components/TweetList/TweetList';
@@ -45,6 +46,14 @@ function Home() {
     fetchData();
   }, []);
 
+  // Set interval to fetch data
+
+  useEffect(() => {
+    setInterval(() => {
+      fetchData();
+    }, 10000);
+  }, []);
+
   // Saves new tweet to server
   async function tweetSaveHandler({ date, content }) {
     setIsLoading(true);
@@ -57,7 +66,6 @@ function Home() {
           date: date,
         }
       );
-      fetchData();
       setError('');
       setIsLoading(false);
     } catch (error) {
@@ -67,14 +75,17 @@ function Home() {
   }
 
   return (
-    <div className="container d-flex flex-column align-items-center my-4">
-      <TweetCreate
-        onTweetSave={tweetSaveHandler}
-        error={error}
-        isLoading={isLoading}
-      />
-      <TweetList tweets={tweets} error={error} />
-    </div>
+    <TweetsContext.Provider value={{ tweets, setTweets }}>
+      <div className="container d-flex flex-column align-items-center my-4">
+        <TweetCreate
+          onTweetSave={tweetSaveHandler}
+          error={error}
+          isLoading={isLoading}
+          userName={userName}
+        />
+        <TweetList />
+      </div>
+    </TweetsContext.Provider>
   );
 }
 

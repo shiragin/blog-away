@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { nanoid } from 'nanoid';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import './TweetCreate.css';
+import { TweetsContext } from '../../lib/TweetsContext';
+import UserName from '../UserName/UserName';
 
-function TweetCreate({ error, isLoading, ...props }) {
+function TweetCreate({ error, isLoading, userName, ...props }) {
   const [tweet, setTweet] = useState('');
+  const { tweets, setTweets } = useContext(TweetsContext);
   const [errorMsg, setErrorMsg] = useState('');
 
   // Updates error message whenever a tweet is submitted
@@ -25,10 +28,12 @@ function TweetCreate({ error, isLoading, ...props }) {
   function buttonClickHandler() {
     const newTweet = {
       id: nanoid(),
+      userName: userName,
       content: tweet,
       date: new Date().toISOString(),
     };
     props.onTweetSave(newTweet);
+    setTweets([newTweet, ...tweets]);
     setErrorMsg(error);
     error || setTweet('');
   }
