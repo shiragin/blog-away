@@ -1,8 +1,7 @@
 // v9 compat packages are API compatible with v8 code
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
+import { getAuth } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,4 +16,3 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-// export const tweetsRef = db.collection('tweets');

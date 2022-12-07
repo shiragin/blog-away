@@ -25,4 +25,5 @@
 .tweet-text {
   color: var(--white);
   margin: 0.6rem 0;
+  white-space: pre-line;
 }
