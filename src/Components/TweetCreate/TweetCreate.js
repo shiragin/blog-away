@@ -12,6 +12,7 @@ function TweetCreate() {
     setTweets,
     tempTweet,
     setTempTweet,
+    setError,
     error,
     isLoading,
     userName,
@@ -19,18 +20,14 @@ function TweetCreate() {
   } = useContext(MainContext);
 
   const [tweet, setTweet] = useState(tempTweet || '');
-  const [errorMsg, setErrorMsg] = useState('');
-
-  // Updates error message whenever a tweet is submitted
-  useEffect(() => setErrorMsg(error), [onTweetSave]);
 
   // Tracks tweet's content and length + error msg if it's too long
   function tweetChangeHandler(e) {
-    setErrorMsg('');
+    setError('');
     setTweet(e.target.value);
     setTempTweet(e.target.value);
     e.target.value.length > 140 &&
-      setErrorMsg("The tweet can't contain more than 140 chars");
+      setError("The tweet can't contain more than 140 chars");
   }
 
   // Creates a new tweet object on submits and sends to app + resets error msg and textarea content
@@ -42,8 +39,9 @@ function TweetCreate() {
     };
     onTweetSave(newTweet);
     setTweets([newTweet, ...tweets]);
-    setErrorMsg(error);
+    setError(error);
     error || setTweet('');
+    setTempTweet('');
   }
 
   return (
@@ -54,12 +52,12 @@ function TweetCreate() {
         placeholder="Say what's on your mind..."
         value={tweet}
         onChange={tweetChangeHandler}
-        onFocus={() => setErrorMsg('')}
+        onFocus={() => setError('')}
       />
       <div className="w-100 d-flex justify-content-between align-items-center">
-        {errorMsg ? (
+        {error ? (
           <Alert variant="danger" className="new-tweet-alert">
-            {errorMsg}
+            {error}
           </Alert>
         ) : (
           <div />
