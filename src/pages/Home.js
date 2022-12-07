@@ -6,16 +6,14 @@ import TweetList from './../Components/TweetList/TweetList';
 import './../App.css';
 
 function Home() {
-  const { setTweets, setIsLoading, setError, userName, setUserName } =
+  const { tweetAPI, setTweets, setIsLoading, setError, userName, setUserName } =
     useContext(MainContext);
 
   // Fetch tweets from server
   async function fetchData() {
     try {
       setIsLoading(true);
-      const res = await axios.get(
-        `https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet`
-      );
+      const res = await axios.get(tweetAPI);
       setTweets(res?.data?.tweets);
       setIsLoading(false);
     } catch (error) {

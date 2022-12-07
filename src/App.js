@@ -12,6 +12,8 @@ function App() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [userName, setUserName] = useState('');
+  const tweetAPI =
+    'https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet';
 
   // Saves new name
   function nameSaveHandler(userName) {
@@ -22,14 +24,11 @@ function App() {
   async function tweetSaveHandler({ date, content }) {
     setIsLoading(true);
     try {
-      await axios.post(
-        'https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet',
-        {
-          content: content,
-          userName: userName ? userName : 'Anonynmous',
-          date: date,
-        }
-      );
+      await axios.post(tweetAPI, {
+        content: content,
+        userName: userName ? userName : 'Anonynmous',
+        date: date,
+      });
       setError('');
       setIsLoading(false);
     } catch (error) {
@@ -41,6 +40,7 @@ function App() {
   return (
     <MainContext.Provider
       value={{
+        tweetAPI,
         tweets,
         setTweets,
         error,
