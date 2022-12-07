@@ -6,8 +6,23 @@ import Navbar from './Components/Navbar/Navbar';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import './App.css';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+// import firebase from 'firebase/app';
+import { addDoc } from 'firebase/firestore';
+import { tweetsRef } from './lib/Firebase';
+import { catsRef } from './lib/Firebase';
 
 function App() {
+  // catsRef.get().then((querySnapshot) => {
+  //   querySnapshot.forEach((doc) => {
+  //     // doc.data() is never undefined for query doc snapshots
+  //     console.log(doc.id, ' => ', doc.data());
+  //   });
+  // });
+
+  // States & variables
   const [tweets, setTweets] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -21,20 +36,40 @@ function App() {
   }
 
   // Saves new tweet to server
-  async function tweetSaveHandler({ date, content }) {
+  function tweetSaveHandler({ date, content }) {
     setIsLoading(true);
-    try {
-      await axios.post(tweetAPI, {
+    tweetsRef
+      .add({
         content: content,
         userName: userName ? userName : 'Anonynmous',
         date: date,
+      })
+      .then(() => {
+        setError('');
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setIsLoading(false);
       });
-      setError('');
-      setIsLoading(false);
-    } catch (error) {
-      setError(error.message);
-      setIsLoading(false);
-    }
+    // try {
+    //   // await axios.post(tweetAPI, {
+    //   //   content: content,
+    //   //   userName: userName ? userName : 'Anonynmous',
+    //   //   date: date,
+    //   // });
+    //   const docRef = await firebase.addDoc(firebase.collection(tweetsRef), {
+    //     content: content,
+    //     userName: userName ? userName : 'Anonynmous',
+    //     date: date,
+    //   });
+    //   // console.log('Document written with ID: ', docRef.id);
+    //   setError('');
+    //   setIsLoading(false);
+    // } catch (error) {
+    setError(error.message);
+    setIsLoading(false);
+    // }
   }
 
   return (

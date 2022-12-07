@@ -36,7 +36,7 @@ function TweetCreate() {
     const newTweet = {
       userName: userName ? userName : 'Anonymous',
       content: tweet,
-      date: new Date().toISOString(),
+      date: new Date().toLocaleString(),
     };
     onTweetSave(newTweet);
     setTweets([newTweet, ...tweets]);
