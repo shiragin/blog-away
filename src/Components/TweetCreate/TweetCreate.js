@@ -7,17 +7,19 @@ import './TweetCreate.css';
 import { MainContext } from '../../lib/MainContext';
 
 function TweetCreate() {
-  const [tweet, setTweet] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
-
   const {
     tweets,
     setTweets,
+    tempTweet,
+    setTempTweet,
     error,
     isLoading,
     userName,
     tweetSaveHandler: onTweetSave,
   } = useContext(MainContext);
+
+  const [tweet, setTweet] = useState(tempTweet || '');
+  const [errorMsg, setErrorMsg] = useState('');
 
   // Updates error message whenever a tweet is submitted
   useEffect(() => setErrorMsg(error), [onTweetSave]);
@@ -26,6 +28,7 @@ function TweetCreate() {
   function tweetChangeHandler(e) {
     setErrorMsg('');
     setTweet(e.target.value);
+    setTempTweet(e.target.value);
     e.target.value.length > 140 &&
       setErrorMsg("The tweet can't contain more than 140 chars");
   }

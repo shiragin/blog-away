@@ -11,11 +11,10 @@ import { db } from './lib/Firebase';
 function App() {
   // States & variables
   const [tweets, setTweets] = useState([]);
+  const [tempTweet, setTempTweet] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [userName, setUserName] = useState('');
-  const tweetAPI =
-    'https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet';
 
   // Saves new name
   function nameSaveHandler(userName) {
@@ -42,7 +41,8 @@ function App() {
   return (
     <MainContext.Provider
       value={{
-        tweetAPI,
+        tempTweet,
+        setTempTweet,
         tweets,
         setTweets,
         error,
