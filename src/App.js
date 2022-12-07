@@ -4,6 +4,8 @@ import { MainContext } from './lib/MainContext';
 import Navbar from './Components/Navbar/Navbar';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import './App.css';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from './lib/Firebase';
@@ -56,11 +58,15 @@ function App() {
       }}
     >
       <BrowserRouter>
+        <Navbar />
         <Routes>
-          <Route path="/" element={<Navbar />}>
-            <Route index element={<Home />} />
-            <Route path="profile" element={<Profile />} />
-          </Route>
+          {/* <Route path="/" element={<Navbar />}></Route> */}
+          {/* <Route path="/" /> */}
+          <Route path="/" element={<Signup />} />
+          <Route exact path="/login" element={<Login />} />
+
+          <Route path="/home" element={<Home />} />
+          <Route path="profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </MainContext.Provider>

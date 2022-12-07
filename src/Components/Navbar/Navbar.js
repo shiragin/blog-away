@@ -7,7 +7,7 @@ function Navbar() {
       <ul className="navbar d-flex justify-content-start gap-5">
         <li className="navbar-link">
           <NavLink
-            to="/"
+            to="/home"
             style={({ isActive }) => ({
               color: isActive ? 'var(--white)' : 'var(--offwhite)',
             })}
