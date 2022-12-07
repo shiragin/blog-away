@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from 'react';
-import { nanoid } from 'nanoid';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';

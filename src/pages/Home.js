@@ -1,35 +1,33 @@
 import React, { useEffect, useContext } from 'react';
 import { MainContext } from '../lib/MainContext';
-import axios from 'axios';
 import TweetCreate from './../Components/TweetCreate/TweetCreate';
 import TweetList from './../Components/TweetList/TweetList';
 import './../App.css';
-import { tweetsRef } from '../lib/Firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../lib/Firebase';
 
 function Home() {
-  const {
-    tweetAPI,
-    setTweets,
-    tweets,
-    setIsLoading,
-    setError,
-    userName,
-    setUserName,
-  } = useContext(MainContext);
+  const { setTweets, setIsLoading, setError, userName, setUserName } =
+    useContext(MainContext);
 
   // Fetch tweets from server
 
-  function fetchData() {
-    const tweetsArray = [];
+  async function fetchData() {
     setIsLoading(true);
-    tweetsRef.get().then((querySnapshot) => {
-      querySnapshot.forEach((tweet) => {
-        tweetsArray.push(tweet.data());
-        setTweets(
-          tweetsArray.sort((a, b) => new Date(b.date) - new Date(a.date))
-        );
-      });
-    });
+    try {
+      const data = await getDocs(collection(db, 'tweets'));
+      console.log(!data.docs.length);
+      if (!data.docs.length) throw new Error('No tweets to show!');
+      const newTweets = data.docs
+        .map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+      setTweets(newTweets);
+    } catch (error) {
+      setError(error.message);
+    }
     setIsLoading(false);
   }
 
@@ -45,7 +43,7 @@ function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchData();
-    }, 10000);
+    }, 20000);
     return () => {
       clearInterval(interval);
     };
