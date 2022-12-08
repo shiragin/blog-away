@@ -16,10 +16,6 @@ function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    !loggedIn && navigate('/signup');
-  }, [loggedIn]);
-
-  useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       !user && navigate('/signup');
     });

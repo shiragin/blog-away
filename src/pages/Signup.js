@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithRedirect,
+} from 'firebase/auth';
 import { auth } from '../lib/Firebase';
 import SignupForm from '../Components/Login/SignupForm';
+import { MainContext } from '../lib/MainContext';
 
 function Signup() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { loggedIn } = useContext(MainContext);
+
+  useEffect(() => {
+    loggedIn && navigate('/');
+  }, [loggedIn]);
+
+  const provider = new GoogleAuthProvider();
+
+  function googleHandler(e) {
+    e.preventDefault();
+    signInWithRedirect(auth, provider);
+  }
 
   async function submitHandler(e) {
     e.preventDefault();
@@ -36,6 +53,7 @@ function Signup() {
         password={password}
         setPassword={setPassword}
         onSubmit={submitHandler}
+        onGoogle={googleHandler}
       />
     </div>
   );

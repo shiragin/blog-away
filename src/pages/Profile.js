@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../lib/Firebase';
 import UserName from '../Components/UserName/UserName';
 import { MainContext } from '../lib/MainContext';
 
@@ -9,8 +11,10 @@ function User() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    !loggedIn && navigate('/signup');
-  }, [loggedIn]);
+    onAuthStateChanged(auth, (user) => {
+      !user && navigate('/signup');
+    });
+  }, []);
 
   return (
     <div className="container d-flex flex-column align-items-center my-4">

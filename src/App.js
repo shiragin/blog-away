@@ -9,7 +9,7 @@ import Signup from './pages/Signup';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from './lib/Firebase';
 import { auth } from './lib/Firebase';
-import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 
 function App() {
   // States & variables
@@ -73,8 +73,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          {/* <Route path="/home" element={<Home />} /> */}
-          <Route path="profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </MainContext.Provider>

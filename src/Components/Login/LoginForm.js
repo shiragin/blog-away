@@ -1,9 +1,18 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './Login.css';
 
-function LoginForm({ email, setEmail, password, setPassword, onLogin }) {
+function LoginForm({
+  email,
+  setEmail,
+  password,
+  setPassword,
+  onLogin,
+  onGoogle,
+}) {
+  const navigate = useNavigate();
+
   return (
     <div className="login-container">
       <h1 className="login-title display-6">Log into your Blog Away!</h1>
@@ -33,15 +42,37 @@ function LoginForm({ email, setEmail, password, setPassword, onLogin }) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-
-        <div className="login-links d-flex justify-content-between align-items-center">
+        <div className="login-links">
+          <div className="d-flex justify-content-between">
+            <Button className="login-submit-button" onClick={onLogin}>
+              Log In
+            </Button>
+            <Button
+              className="login-submit-button"
+              onClick={() => navigate('/signup')}
+            >
+              Sign up
+            </Button>
+          </div>
+          <div className="sign-google d-flex flex-column justify-content-center align-items-center">
+            <div>Or</div>
+            <Button
+              className="login-submit-button"
+              type="submit"
+              onClick={onGoogle}
+            >
+              Log in with Google
+            </Button>
+          </div>
+        </div>
+        {/* <div className="login-links d-flex justify-content-between align-items-center">
           <div className="login-link w-50">
             No account yet? <NavLink to="/">Sign up</NavLink>
           </div>
           <Button className="login-submit-button" onClick={onLogin}>
             Login
           </Button>
-        </div>
+        </div> */}
       </Form>
     </div>
   );
