@@ -7,7 +7,7 @@ import { MainContext } from '../lib/MainContext';
 
 function User() {
   // Check if user is logged in
-  const { loggedIn } = useContext(MainContext);
+
   const navigate = useNavigate();
 
   useEffect(() => {

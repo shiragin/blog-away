@@ -43,9 +43,9 @@ function App() {
 
   // check if user is signed in
 
-  onAuthStateChanged(auth, (user) => {
-    user ? setLoggedIn(true) : setLoggedIn(false);
-  });
+  // onAuthStateChanged(auth, (user) => {
+  //   user ? setLoggedIn(true) : setLoggedIn(false);
+  // });
 
   return (
     <MainContext.Provider

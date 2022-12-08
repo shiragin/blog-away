@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { MainContext } from '../../lib/MainContext';
 import { auth } from '../../lib/Firebase';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
@@ -7,7 +7,14 @@ import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import './Navbar.css';
 
 function Navbar() {
-  const { loggedIn } = useContext(MainContext);
+  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState('');
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      user ? setLoggedIn(true) : setLoggedIn(false);
+    });
+  }, []);
 
   return (
     <>

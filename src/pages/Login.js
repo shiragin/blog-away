@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithRedirect,
+  onAuthStateChanged,
 } from 'firebase/auth';
 import { auth } from '../lib/Firebase';
 import LoginForm from '../Components/Login/LoginForm';
@@ -19,9 +20,15 @@ function Login() {
   const [logType, setLogType] = useState('signup');
   const { loggedIn } = useContext(MainContext);
 
+  // useEffect(() => {
+  //   loggedIn && navigate('/');
+  // }, [loggedIn]);
+
   useEffect(() => {
-    loggedIn && navigate('/');
-  }, [loggedIn]);
+    onAuthStateChanged(auth, (user) => {
+      user ? navigate('/') : navigate('/login');
+    });
+  }, []);
 
   const provider = new GoogleAuthProvider();
 
