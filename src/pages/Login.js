@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { collection, doc, setDoc, addDoc } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -7,6 +8,7 @@ import {
   signInWithRedirect,
   onAuthStateChanged,
 } from 'firebase/auth';
+import { db } from '../lib/Firebase';
 import { auth } from '../lib/Firebase';
 import LoginForm from '../Components/Login/LoginForm';
 import { MainContext } from '../lib/MainContext';
@@ -18,11 +20,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('signup');
-  const { loggedIn } = useContext(MainContext);
-
-  // useEffect(() => {
-  //   loggedIn && navigate('/');
-  // }, [loggedIn]);
+  const { loggedIn, userName } = useContext(MainContext);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -52,7 +50,11 @@ function Login() {
   async function signupHandler(e) {
     e.preventDefault();
     await createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
+      .then((user) => {
+        const { email, uid } = user.user;
+        console.log(email);
+        console.log(uid);
+        setDoc(doc(db, 'users', uid), { email, userName });
         navigate('/');
       })
       .catch((error) => {

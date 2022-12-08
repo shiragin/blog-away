@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { MainContext } from './lib/MainContext';
 import Navbar from './Components/Navbar/Navbar';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, doc, addDoc, updateDoc } from 'firebase/firestore';
 import { db } from './lib/Firebase';
 import { auth } from './lib/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -15,24 +15,15 @@ function App() {
   const [tweets, setTweets] = useState([]);
   const [tempTweet, setTempTweet] = useState('');
   const [error, setError] = useState('');
-  const [loggedIn, setLoggedIn] = useState('');
+  const [user, setUser] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [userName, setUserName] = useState('');
 
-  // Saves new name
-  function nameSaveHandler(userName) {
-    setUserName(userName);
-  }
-
   // Saves new tweet to server
-  async function tweetSaveHandler({ date, content }) {
+  async function tweetSaveHandler(newTweet) {
     setIsLoading(true);
     try {
-      await addDoc(collection(db, 'tweets'), {
-        content: content,
-        userName: userName ? userName : 'Anonynmous',
-        date: date,
-      });
+      await addDoc(collection(db, 'tweets'), newTweet);
       setError('');
       setIsLoading(false);
     } catch (error) {
@@ -41,11 +32,25 @@ function App() {
     }
   }
 
-  // check if user is signed in
+  // Get user details
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) setUser(user.uid);
+    });
+  }, []);
 
-  // onAuthStateChanged(auth, (user) => {
-  //   user ? setLoggedIn(true) : setLoggedIn(false);
-  // });
+  // Saves new name
+  function nameSaveHandler(userName) {
+    setUserName(userName);
+    updateUsername();
+  }
+
+  async function updateUsername() {
+    const userRef = doc(db, 'users', user);
+    await updateDoc(userRef, {
+      userName: userName,
+    });
+  }
 
   return (
     <MainContext.Provider
@@ -62,8 +67,8 @@ function App() {
         tweetSaveHandler,
         isLoading,
         setIsLoading,
-        loggedIn,
-        setLoggedIn,
+        user,
+        setUser,
       }}
     >
       <BrowserRouter>

@@ -16,6 +16,7 @@ function TweetCreate() {
     error,
     isLoading,
     userName,
+    user,
     tweetSaveHandler: onTweetSave,
   } = useContext(MainContext);
 
@@ -34,6 +35,7 @@ function TweetCreate() {
   function buttonClickHandler() {
     const newTweet = {
       userName: userName ? userName : 'Anonymous',
+      user: user,
       content: tweet,
       date: new Date().toLocaleString(),
     };
