@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { Google } from 'react-bootstrap-icons';
 import './Login.css';
 
 function LoginForm({
@@ -16,8 +16,6 @@ function LoginForm({
   logType,
   setLogType,
 }) {
-  const navigate = useNavigate();
-
   return (
     <div className="login-container">
       <h1 className="login-title display-6">
@@ -88,7 +86,8 @@ function LoginForm({
             type="submit"
             onClick={onGoogle}
           >
-            Sign up with Google
+            <Google size={16} className="google" />{' '}
+            {logType === 'signup' ? 'Sign up' : 'Log in'} with Google
           </Button>
           <div className="button-text">Already have an account?</div>
           {logType === 'signup' ? (

@@ -64,6 +64,7 @@
 
 .button-text {
   margin: 1rem 0 0.8rem;
+  color: var(--offwhite);
 }
 
 .login-submit-button {
@@ -74,13 +75,8 @@
   margin-bottom: 1.5rem;
 }
 
-/* .login-links {
-  margin-top: 1.6rem;
-} */
-
 .login-link,
 .login-link:visited {
-  /* margin-top: 0.6rem; */
   justify-self: flex-end;
   text-align: left;
   color: (--white);
@@ -98,11 +94,7 @@
   color: var(--white);
 }
 
-.sign-google {
-  margin: 1rem 0;
-  border-top: 1px solid #ccc;
-}
-
-.sign-google div {
-  margin: 1rem;
+.google {
+  padding-bottom: 0.12rem;
+  margin-right: 0.4rem;
 }
