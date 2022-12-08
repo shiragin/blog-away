@@ -4,7 +4,7 @@ import TweetCreate from './../Components/TweetCreate/TweetCreate';
 import TweetList from './../Components/TweetList/TweetList';
 import { collection, getDocs } from 'firebase/firestore';
 import { auth } from '../lib/Firebase';
-import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { db } from '../lib/Firebase';
 import { useNavigate } from 'react-router-dom';
 
