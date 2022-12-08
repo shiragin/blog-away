@@ -33,7 +33,7 @@ function Login() {
       })
       .catch((error) => {
         const err = error.code;
-        setError(err);
+        displayError(err);
       });
   }
 
@@ -50,11 +50,11 @@ function Login() {
       })
       .catch((error) => {
         const err = error.code;
-        setError(err);
+        displayError(err);
       });
   }
 
-  function setError(error) {
+  function displayError(error) {
     switch (error) {
       case 'auth/invalid-email':
         setErrMsg('Please enter a valid email address');
