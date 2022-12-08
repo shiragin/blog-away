@@ -6,15 +6,17 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import './App.css';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from './lib/Firebase';
+import { auth } from './lib/Firebase';
+import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 
 function App() {
   // States & variables
   const [tweets, setTweets] = useState([]);
   const [tempTweet, setTempTweet] = useState('');
   const [error, setError] = useState('');
+  const [loggedIn, setLoggedIn] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [userName, setUserName] = useState('');
 
@@ -40,6 +42,14 @@ function App() {
     }
   }
 
+  // check if user is signed in
+
+  onAuthStateChanged(auth, (user) => {
+    console.log(user);
+    user ? setLoggedIn(true) : setLoggedIn(false);
+  });
+  console.log(loggedIn);
+
   return (
     <MainContext.Provider
       value={{
@@ -55,13 +65,13 @@ function App() {
         tweetSaveHandler,
         isLoading,
         setIsLoading,
+        loggedIn,
+        setLoggedIn,
       }}
     >
       <BrowserRouter>
         <Navbar />
         <Routes>
-          {/* <Route path="/" element={<Navbar />}></Route> */}
-          {/* <Route path="/" /> */}
           <Route path="/" element={<Signup />} />
           <Route exact path="/login" element={<Login />} />
 

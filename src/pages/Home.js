@@ -2,8 +2,9 @@ import React, { useEffect, useContext } from 'react';
 import { MainContext } from '../lib/MainContext';
 import TweetCreate from './../Components/TweetCreate/TweetCreate';
 import TweetList from './../Components/TweetList/TweetList';
-import './../App.css';
 import { collection, getDocs } from 'firebase/firestore';
+// import { auth } from '../lib/Firebase';
+// import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../lib/Firebase';
 
 function Home() {
@@ -16,7 +17,6 @@ function Home() {
     setIsLoading(true);
     try {
       const data = await getDocs(collection(db, 'tweets'));
-      console.log(!data.docs.length);
       if (!data.docs.length) throw new Error('No tweets to show!');
       const newTweets = data.docs
         .map((doc) => ({
