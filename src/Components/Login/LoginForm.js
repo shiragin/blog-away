@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import './Login.css';
 
 function LoginForm({
@@ -8,8 +9,12 @@ function LoginForm({
   setEmail,
   password,
   setPassword,
+  errMsg,
+  setErrMsg,
   onLogin,
   onGoogle,
+  logType,
+  setLogType,
 }) {
   const navigate = useNavigate();
 
@@ -42,14 +47,21 @@ function LoginForm({
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-        <div className="login-links">
+        <div className="login-links d-flex flex-column gap-2">
+          <div className="d-flex justify-content-end">
+            {errMsg && (
+              <Alert variant="danger" className="error-msg">
+                {errMsg}
+              </Alert>
+            )}
+          </div>
           <div className="d-flex justify-content-between">
             <Button className="login-submit-button" onClick={onLogin}>
               Log In
             </Button>
             <Button
               className="login-submit-button"
-              onClick={() => navigate('/signup')}
+              onClick={() => setLogType('signin')}
             >
               Sign up
             </Button>

@@ -13,8 +13,11 @@ function SignupForm({
   setPassword,
   onSubmit,
   onGoogle,
+  logType,
+  setLogType,
 }) {
   const navigate = useNavigate();
+
   return (
     <div className="login-container">
       <h1 className="login-title display-6">Sign up for Blog Away!</h1>
@@ -68,7 +71,7 @@ function SignupForm({
             </Button>
             <Button
               className="login-submit-button"
-              onClick={() => navigate('/login')}
+              onClick={() => setLogType('login')}
             >
               Log in
             </Button>

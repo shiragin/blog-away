@@ -12,7 +12,7 @@ function User() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      !user && navigate('/signup');
+      !user && navigate('/login');
     });
   }, []);
 
