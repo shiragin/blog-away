@@ -5,7 +5,7 @@ import Navbar from './Components/Navbar/Navbar';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
-import { collection, doc, addDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, addDoc, updateDoc } from 'firebase/firestore';
 import { db } from './lib/Firebase';
 import { auth } from './lib/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -35,7 +35,9 @@ function App() {
   // Get user details
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user) setUser(user.uid);
+      if (user) {
+        setUser(user.uid);
+      }
     });
   }, []);
 
@@ -47,9 +49,11 @@ function App() {
 
   async function updateUsername() {
     const userRef = doc(db, 'users', user);
-    await updateDoc(userRef, {
-      userName: userName,
-    });
+    if (userRef) {
+      await updateDoc(userRef, {
+        userName: userName,
+      });
+    }
   }
 
   return (
