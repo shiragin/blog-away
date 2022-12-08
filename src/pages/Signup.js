@@ -14,6 +14,8 @@ function Signup() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  // const [errMsg, setLogType] = useState('');
   const { loggedIn } = useContext(MainContext);
 
   useEffect(() => {
@@ -31,17 +33,17 @@ function Signup() {
     e.preventDefault();
 
     await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
+      .then(() => {
         navigate('/');
-        // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error(errorCode, errorMessage);
-        // ..
+        console.error(error.code);
+        const err = error.code;
+        switch (err) {
+          case 'auth/invalid-email':
+            setErrMsg('Please enter a valid email.');
+            break;
+        }
       });
   }
 
@@ -52,6 +54,8 @@ function Signup() {
         setEmail={setEmail}
         password={password}
         setPassword={setPassword}
+        setErrMsg={setErrMsg}
+        errMsg={errMsg}
         onSubmit={submitHandler}
         onGoogle={googleHandler}
       />
