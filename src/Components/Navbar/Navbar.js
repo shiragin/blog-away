@@ -8,13 +8,6 @@ import './Navbar.css';
 
 function Navbar() {
   const { loggedIn } = useContext(MainContext);
-  // const [loggedIn, setLoggedIn] = useState('');
-
-  // onAuthStateChanged(auth, (user) => {
-  //   console.log(user);
-  //   user ? setLoggedIn(true) : setLoggedIn(false);
-  // });
-  // console.log(loggedIn);
 
   return (
     <>
@@ -23,7 +16,7 @@ function Navbar() {
           <li className="navbar-link">
             <NavLink
               onClick={(e) => !loggedIn && e.preventDefault()}
-              to="/home"
+              to="/"
               style={({ isActive }) => ({
                 color: isActive ? 'var(--white)' : 'var(--offwhite)',
               })}

@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './Login.css';
 
-function SignupForm({ email, setEmail, password, setPassword, onSubmit }) {
+function SignupForm({ email, password, setEmail, setPassword, onSubmit }) {
   return (
     <div className="login-container">
       <h1 className="login-title display-6">Sign up for Blog Away!</h1>

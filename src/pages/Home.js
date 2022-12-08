@@ -3,13 +3,27 @@ import { MainContext } from '../lib/MainContext';
 import TweetCreate from './../Components/TweetCreate/TweetCreate';
 import TweetList from './../Components/TweetList/TweetList';
 import { collection, getDocs } from 'firebase/firestore';
-// import { auth } from '../lib/Firebase';
-// import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../lib/Firebase';
+import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../lib/Firebase';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
-  const { setTweets, setIsLoading, setError, userName, setUserName } =
+  const { setTweets, setIsLoading, setError, userName, setUserName, loggedIn } =
     useContext(MainContext);
+
+  // Check if user is logged in
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    !loggedIn && navigate('/signup');
+  }, [loggedIn]);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      !user && navigate('/signup');
+    });
+  }, []);
 
   // Fetch tweets from server
 
