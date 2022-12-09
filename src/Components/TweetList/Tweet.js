@@ -2,8 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/Firebase';
 import { MainContext } from '../../lib/MainContext';
-import anon from './anon.png';
-// import arrow from './img/arrow.svg';
+import anon from './anon.jpeg';
 
 function Tweet() {
   const { user, date, content, id } = useContext(MainContext);
@@ -15,9 +14,8 @@ function Tweet() {
     const user = await getDoc(userRef);
     const { userName } = await user.data();
     const { userImg } = await user.data();
-    setTweetUserName(userName);
-    if (userImg) setTweetUserImg(userImg);
-    else setTweetUserImg(anon);
+    userName ? setTweetUserName(userName) : setTweetUserName('Anon');
+    userImg ? setTweetUserImg(userImg) : setTweetUserImg(anon);
   }
 
   useEffect(() => {
@@ -29,8 +27,8 @@ function Tweet() {
       key={id}
       className="tweet-card d-flex flex-column justify-content-center"
     >
-      <div className="tweet-header d-flex justify-content-between align-items-start">
-        <div className="d-flex gap-3">
+      <div className="tweet-header d-flex justify-content-between align-items-center">
+        <div className="d-flex align-items-center gap-3">
           <img src={tweetUserImg} className="tweet-img" />
           <p className="tweet-username">{tweetUserName}</p>
         </div>

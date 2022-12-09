@@ -19,7 +19,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [userName, setUserName] = useState('');
   const [savedName, setSavedName] = useState('');
-  const [userImg, setUserImg] = useState('./Components/TweetList/anon.png');
+  const [userImg, setUserImg] = useState('');
   const [progressPercent, setProgressPercent] = useState(0);
 
   // Saves new tweet to server
@@ -52,7 +52,7 @@ function App() {
   }
 
   useEffect(() => {
-    profileSaveHandler(userName, userImg);
+    if (userImg) profileSaveHandler(userName, userImg);
   }, [userImg]);
 
   // Updates the current username to the name saved in the database
@@ -73,12 +73,11 @@ function App() {
         throw new Error('No such user profile!');
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
   async function updateUserProfile() {
-    console.log(userName, userImg);
     const userRef = doc(db, 'users', user);
     if (userRef) {
       await updateDoc(userRef, {

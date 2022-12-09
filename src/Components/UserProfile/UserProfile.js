@@ -39,12 +39,11 @@ function UserProfile() {
 
   // get the img url from storage
   function getImgurl() {
-    if (!uploadedImg) return;
+    if (uploadedImg === null) return;
 
     const storageRef = ref(storage, `img/${uploadedImg.name + v4()}`);
     uploadBytes(storageRef, uploadedImg).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((downloadURL) => {
-        console.log(downloadURL);
         setUserImg(downloadURL);
       });
     });
@@ -79,7 +78,6 @@ function UserProfile() {
             className="name-input"
             type="file"
             placeholder={'Let the world see you!'}
-            // value={userName ? userName : ''}
           />
           {buttonClicked && <CheckCircle color="var(--blue)" size={30} />}
         </div>

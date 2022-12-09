@@ -8,7 +8,7 @@ function TweetList() {
   const { tweets } = useContext(MainContext);
 
   return (
-    <div className="mt-4 tweet-list d-flex flex-column gap-3 w-75">
+    <div className="mt-4 tweet-list d-flex flex-column gap-4 w-75">
       {tweets.map(({ id, user, date, content }) => {
         return (
           <MainContext.Provider

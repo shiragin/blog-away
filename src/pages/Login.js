@@ -52,8 +52,6 @@ function Login() {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((user) => {
         const { email, uid } = user.user;
-        console.log(email);
-        console.log(uid);
         setDoc(doc(db, 'users', uid), { email, userName });
         navigate('/');
       })
