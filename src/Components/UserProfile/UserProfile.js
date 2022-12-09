@@ -2,12 +2,13 @@ import React, { useState, useContext } from 'react';
 import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { storage } from '../../lib/Firebase';
 import { MainContext } from '../../lib/MainContext';
+import { v4 } from 'uuid';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { CheckCircle } from 'react-bootstrap-icons';
-import './UserName.css';
+import './UserProfile.css';
 
-function UserName() {
+function UserProfile() {
   const {
     userName,
     setUserName,
@@ -23,8 +24,7 @@ function UserName() {
   }
 
   function imgChangeHandler(e) {
-    const file = e.name;
-    setUploadedImg(file);
+    setUploadedImg(e.target.files[0]);
   }
 
   // Sets new name (trimmed) locally and to server on change
@@ -40,9 +40,8 @@ function UserName() {
   // get the img url from storage
   function getImgurl() {
     if (!uploadedImg) return;
-    // console.log(uploadedImg);
 
-    const storageRef = ref(storage, `files/${uploadedImg}`);
+    const storageRef = ref(storage, `img/${uploadedImg.name + v4()}`);
     uploadBytes(storageRef, uploadedImg).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((downloadURL) => {
         console.log(downloadURL);
@@ -50,21 +49,6 @@ function UserName() {
       });
     });
   }
-
-  // const storageRef = ref(storage, 'some-child');
-
-  // 'file' comes from the Blob or File API
-  // uploadBytes(storageRef, file).then((snapshot) => {
-  //   console.log('Uploaded a blob or file!');
-  // });
-  // const storageRef = ref(storage, `files/${uploadedImg}`);
-  // const uploadTask = uploadBytes(storageRef, uploadedImg);
-
-  // uploadTask.on('state_changed', () => {
-  //   getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-  //     setUserImg(downloadURL);
-  //   });
-  // });
 
   // Handles button text
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -91,7 +75,7 @@ function UserName() {
         <div className="name-input-box d-flex align-items-center justify-content-end gap-3">
           <Form.Control
             onFocus={() => buttonClicked && setButtonClicked(false)}
-            onChange={(e) => imgChangeHandler(e.target?.files[0])}
+            onChange={imgChangeHandler}
             className="name-input"
             type="file"
             placeholder={'Let the world see you!'}
@@ -116,4 +100,4 @@ function UserName() {
   );
 }
 
-export default UserName;
+export default UserProfile;

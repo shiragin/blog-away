@@ -9,7 +9,7 @@ function Tweet() {
   const { user, date, content, id } = useContext(MainContext);
   const userRef = doc(db, 'users', user);
   const [tweetUserName, setTweetUserName] = useState('');
-  const [tweetUserImg, setTweetUserImg] = useState(anon);
+  const [tweetUserImg, setTweetUserImg] = useState('');
 
   async function getUserName() {
     const user = await getDoc(userRef);
@@ -17,6 +17,7 @@ function Tweet() {
     const { userImg } = await user.data();
     setTweetUserName(userName);
     if (userImg) setTweetUserImg(userImg);
+    else setTweetUserImg(anon);
   }
 
   useEffect(() => {

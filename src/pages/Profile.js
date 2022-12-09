@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../lib/Firebase';
-import UserName from '../Components/UserName/UserName';
+import UserProfile from '../Components/UserProfile/UserProfile';
 
 function User() {
   // Check if user is logged in
@@ -17,7 +17,7 @@ function User() {
 
   return (
     <div className="container d-flex flex-column align-items-center my-4">
-      <UserName />
+      <UserProfile />
     </div>
   );
 }
