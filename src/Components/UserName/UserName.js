@@ -10,6 +10,7 @@ function UserName() {
     userName,
     setUserName,
     nameSaveHandler: onNameSave,
+    savedName,
   } = useContext(MainContext);
 
   function nameChangeHandler(e) {

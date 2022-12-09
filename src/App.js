@@ -18,6 +18,7 @@ function App() {
   const [user, setUser] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [userName, setUserName] = useState('');
+  const [savedName, setSavedName] = useState('');
 
   // Saves new tweet to server
   async function tweetSaveHandler(newTweet) {
@@ -47,6 +48,22 @@ function App() {
     updateUsername();
   }
 
+  useEffect(() => {
+    getSavedName();
+  }, [tweets]);
+
+  async function getSavedName() {
+    const userRef = doc(db, 'users', user);
+    const docSnap = await getDoc(userRef);
+
+    if (docSnap.exists()) {
+      setSavedName(docSnap.data().userName);
+      setUserName(docSnap.data().userName);
+    } else {
+      console.log('No such document!');
+    }
+  }
+
   async function updateUsername() {
     const userRef = doc(db, 'users', user);
     if (userRef) {
@@ -73,6 +90,7 @@ function App() {
         setIsLoading,
         user,
         setUser,
+        savedName,
       }}
     >
       <BrowserRouter>

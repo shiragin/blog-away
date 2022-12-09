@@ -7,27 +7,17 @@ import { signOut, onAuthStateChanged } from 'firebase/auth';
 import './Navbar.css';
 
 function Navbar() {
-  const { userName, setUserName, user } = useContext(MainContext);
+  const { userName, setUserName, user, savedName, setSavedName } =
+    useContext(MainContext);
   const [loggedIn, setLoggedIn] = useState('');
-  const [savedName, setSavedName] = useState('');
+  // const [savedName, setSavedName] = useState('');
+  console.log(savedName);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       user ? setLoggedIn(true) : setLoggedIn(false);
     });
-    getSavedName();
-  }, []);
-
-  async function getSavedName() {
-    const userRef = doc(db, 'users', user);
-    const docSnap = await getDoc(userRef);
-
-    if (docSnap.exists()) {
-      setSavedName(docSnap.data().userName);
-    } else {
-      console.log('No such document!');
-    }
-  }
+  });
 
   console.log(user, savedName);
 
@@ -59,9 +49,15 @@ function Navbar() {
           </li>
         </div>
         <div className="d-flex justify-content-start gap-5">
-          <li className="navbar-link">Logged in as {userName}</li>
+          <li className="navbar-link">Logged in as {savedName}</li>
           <li className="navbar-link">
-            <NavLink to="/" onClick={() => signOut(auth)}>
+            <NavLink
+              to="/"
+              onClick={() => {
+                signOut(auth);
+                setSavedName('');
+              }}
+            >
               Sign Out
             </NavLink>
           </li>
@@ -71,5 +67,4 @@ function Navbar() {
     </>
   );
 }
-
 export default Navbar;
