@@ -20,7 +20,6 @@ function App() {
   const [userName, setUserName] = useState('');
   const [savedName, setSavedName] = useState('');
   const [userImg, setUserImg] = useState('');
-  const [progressPercent, setProgressPercent] = useState(0);
 
   // Saves new tweet to server
   async function tweetSaveHandler(newTweet) {
@@ -58,7 +57,7 @@ function App() {
   // Updates the current username to the name saved in the database
   useEffect(() => {
     if (user.length) getSavedName();
-  }, [user]);
+  }, [tweets]);
 
   async function getSavedName() {
     try {
@@ -107,8 +106,7 @@ function App() {
         savedName,
         userImg,
         setUserImg,
-        progressPercent,
-        setProgressPercent,
+        getSavedName,
       }}
     >
       <BrowserRouter>

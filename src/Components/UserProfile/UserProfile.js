@@ -15,6 +15,7 @@ function UserProfile() {
     userImg,
     setUserImg,
     profileSaveHandler: onProfileSave,
+    getSavedName,
   } = useContext(MainContext);
 
   const [uploadedImg, setUploadedImg] = useState(null);
@@ -35,6 +36,7 @@ function UserProfile() {
     getImgurl();
     onProfileSave(trimmed, userImg);
     setButtonClicked(true);
+    getSavedName();
   }
 
   // get the img url from storage
