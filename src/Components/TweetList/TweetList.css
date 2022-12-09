@@ -11,10 +11,17 @@
   flex-wrap: wrap;
 }
 
+.tweet-img {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+}
+
 .tweet-username {
+  padding-top: 0.4rem;
   word-wrap: break-word;
   flex-wrap: wrap;
-  max-width: 45%;
+  /* max-width: 45%; */
 }
 
 .tweet-date {

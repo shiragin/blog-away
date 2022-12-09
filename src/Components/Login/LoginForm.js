@@ -89,7 +89,11 @@ function LoginForm({
             <Google size={16} className="google" />{' '}
             {logType === 'signup' ? 'Sign up' : 'Log in'} with Google
           </Button>
-          <div className="button-text">Already have an account?</div>
+          <div className="button-text">
+            {logType === 'signup'
+              ? 'Already have an account?'
+              : 'No account yet'}
+          </div>
           {logType === 'signup' ? (
             <Button
               className="login-submit-button"

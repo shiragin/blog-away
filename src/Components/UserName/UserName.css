@@ -3,6 +3,10 @@
   color: var(--white);
 }
 
+.form-group {
+  margin-bottom: 1rem;
+}
+
 .name-title {
   margin-bottom: 2rem;
 }

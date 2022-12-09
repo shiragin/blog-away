@@ -10,16 +10,12 @@ function Navbar() {
   const { userName, setUserName, user, savedName, setSavedName } =
     useContext(MainContext);
   const [loggedIn, setLoggedIn] = useState('');
-  // const [savedName, setSavedName] = useState('');
-  console.log(savedName);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       user ? setLoggedIn(true) : setLoggedIn(false);
     });
   });
-
-  console.log(user, savedName);
 
   return (
     <>

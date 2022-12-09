@@ -19,7 +19,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
-  const [logType, setLogType] = useState('signup');
+  const [logType, setLogType] = useState('login');
   const { loggedIn, userName } = useContext(MainContext);
 
   useEffect(() => {

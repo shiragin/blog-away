@@ -9,7 +9,7 @@ import { db } from '../lib/Firebase';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
-  const { setTweets, setIsLoading, setError, userName, setUserName, loggedIn } =
+  const { setTweets, setIsLoading, setError, userName, setUserName } =
     useContext(MainContext);
 
   // Check if user is logged in

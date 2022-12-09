@@ -28,7 +28,7 @@
   color: var(--white);
 }
 
-.navbar-link:hover {
+a.navbar-link:hover {
   color: var(--blue);
   transition: color 0.2s ease-in-out;
 }

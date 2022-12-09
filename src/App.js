@@ -19,6 +19,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [userName, setUserName] = useState('');
   const [savedName, setSavedName] = useState('');
+  const [userImg, setUserImg] = useState('./Components/TweetList/anon.png');
+  const [progressPercent, setProgressPercent] = useState(0);
 
   // Saves new tweet to server
   async function tweetSaveHandler(newTweet) {
@@ -43,32 +45,45 @@ function App() {
   }, []);
 
   // Saves new name
-  function nameSaveHandler(userName) {
+  function profileSaveHandler(userName, userImg) {
     setUserName(userName);
-    updateUsername();
+    setUserImg(userImg);
+    updateUserProfile();
   }
 
   useEffect(() => {
-    getSavedName();
-  }, [tweets]);
+    profileSaveHandler(userName, userImg);
+  }, [userImg]);
+
+  // Updates the current username to the name saved in the database
+  useEffect(() => {
+    if (user.length) getSavedName();
+  }, [user]);
 
   async function getSavedName() {
-    const userRef = doc(db, 'users', user);
-    const docSnap = await getDoc(userRef);
+    try {
+      const userRef = doc(db, 'users', user);
+      const userProfile = await getDoc(userRef);
 
-    if (docSnap.exists()) {
-      setSavedName(docSnap.data().userName);
-      setUserName(docSnap.data().userName);
-    } else {
-      console.log('No such document!');
+      if (userProfile.exists()) {
+        const { userName } = userProfile.data();
+        setSavedName(userName);
+        setUserName(userName);
+      } else {
+        throw new Error('No such user profile!');
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
-  async function updateUsername() {
+  async function updateUserProfile() {
+    console.log(userName, userImg);
     const userRef = doc(db, 'users', user);
     if (userRef) {
       await updateDoc(userRef, {
         userName: userName,
+        userImg: userImg,
       });
     }
   }
@@ -84,13 +99,17 @@ function App() {
         setError,
         userName,
         setUserName,
-        nameSaveHandler,
+        profileSaveHandler,
         tweetSaveHandler,
         isLoading,
         setIsLoading,
         user,
         setUser,
         savedName,
+        userImg,
+        setUserImg,
+        progressPercent,
+        setProgressPercent,
       }}
     >
       <BrowserRouter>
