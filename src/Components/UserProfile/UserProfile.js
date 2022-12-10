@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { storage } from '../../lib/Firebase';
-import { MainContext } from '../../lib/MainContext';
+import { useMainContext } from '../../lib/MainContext';
 import { v4 } from 'uuid';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -16,7 +16,7 @@ function UserProfile() {
     setUserImg,
     getSavedName,
     profileSaveHandler: onProfileSave,
-  } = useContext(MainContext);
+  } = useMainContext();
 
   const [uploadedImg, setUploadedImg] = useState(null);
 

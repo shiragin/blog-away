@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
 import {
@@ -11,7 +11,7 @@ import {
 import { db } from '../lib/Firebase';
 import { auth } from '../lib/Firebase';
 import LoginForm from '../Components/Login/LoginForm';
-import { MainContext } from '../lib/MainContext';
+import { useMainContext } from '../lib/MainContext';
 
 function Login() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('login');
-  const { userName, savedName } = useContext(MainContext);
+  const { userName, savedName } = useMainContext();
 
   console.log('From Login --');
   console.log('Username: ', userName);

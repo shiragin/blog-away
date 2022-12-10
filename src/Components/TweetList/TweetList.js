@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
 import { nanoid } from 'nanoid';
-import { MainContext } from '../../lib/MainContext';
+import { useMainContext } from '../../lib/MainContext';
 import Tweet from './Tweet';
 import './TweetList.css';
 
 function TweetList() {
-  const { tweets } = useContext(MainContext);
+  const { tweets } = useMainContext();
 
   return (
     <div className="mt-4 tweet-list d-flex flex-column gap-4 w-75">

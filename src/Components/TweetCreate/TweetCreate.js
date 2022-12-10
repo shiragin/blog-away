@@ -1,10 +1,10 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import './TweetCreate.css';
-import { MainContext } from '../../lib/MainContext';
+import { useMainContext } from '../../lib/MainContext';
 
 function TweetCreate() {
   const {
@@ -17,7 +17,7 @@ function TweetCreate() {
     isLoading,
     user,
     tweetSaveHandler: onTweetSave,
-  } = useContext(MainContext);
+  } = useMainContext();
 
   const [tweet, setTweet] = useState(tempTweet || '');
 

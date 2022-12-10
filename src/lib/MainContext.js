@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import {
   collection,
   doc,
@@ -10,6 +10,10 @@ import {
 import { db } from './Firebase';
 
 export const MainContext = createContext();
+
+export function useMainContext() {
+  return useContext(MainContext);
+}
 
 export default function MainContextProvider({ children }) {
   // States & variables

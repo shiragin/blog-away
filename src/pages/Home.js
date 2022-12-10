@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react';
-import { MainContext } from '../lib/MainContext';
+import React, { useEffect } from 'react';
+import { useMainContext } from '../lib/MainContext';
 import TweetCreate from './../Components/TweetCreate/TweetCreate';
 import TweetList from './../Components/TweetList/TweetList';
 import { collection, getDocs } from 'firebase/firestore';
@@ -17,7 +17,7 @@ function Home() {
     addNewUser,
     user,
     getSavedName,
-  } = useContext(MainContext);
+  } = useMainContext();
 
   // Check if user is logged in
   const navigate = useNavigate();

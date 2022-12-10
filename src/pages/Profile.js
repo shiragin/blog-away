@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../lib/Firebase';
-import { MainContext } from '../lib/MainContext';
+import { useMainContext } from '../lib/MainContext';
 import UserProfile from '../Components/UserProfile/UserProfile';
 
 function Profile() {
@@ -14,7 +14,7 @@ function Profile() {
     setUserImg,
     updateUserProfile,
     profileSaveHandler,
-  } = useContext(MainContext);
+  } = useMainContext();
   // Check if user is logged in
 
   const navigate = useNavigate();

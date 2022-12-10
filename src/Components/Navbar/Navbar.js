@@ -1,13 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
-import { MainContext } from '../../lib/MainContext';
+import { useMainContext } from '../../lib/MainContext';
 import { auth } from '../../lib/Firebase';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
 import './Navbar.css';
 
 function Navbar() {
-  const { savedName, setSavedName, setUserName, setUserImg } =
-    useContext(MainContext);
+  const { savedName, setSavedName, setUserName, setUserImg } = useMainContext();
   const [loggedIn, setLoggedIn] = useState('');
 
   useEffect(() => {
