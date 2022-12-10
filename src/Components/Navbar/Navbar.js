@@ -6,7 +6,8 @@ import { signOut, onAuthStateChanged } from 'firebase/auth';
 import './Navbar.css';
 
 function Navbar() {
-  const { savedName, setSavedName } = useContext(MainContext);
+  const { savedName, setSavedName, setUserName, setUserImg } =
+    useContext(MainContext);
   const [loggedIn, setLoggedIn] = useState('');
 
   useEffect(() => {
@@ -52,6 +53,8 @@ function Navbar() {
               onClick={() => {
                 signOut(auth);
                 setSavedName('');
+                setUserName('');
+                setUserImg('');
               }}
             >
               Sign Out

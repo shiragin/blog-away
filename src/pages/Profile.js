@@ -1,10 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../lib/Firebase';
+import { MainContext } from '../lib/MainContext';
 import UserProfile from '../Components/UserProfile/UserProfile';
 
-function User() {
+function Profile() {
+  const {
+    userImg,
+    userName,
+    savedName,
+    setUserName,
+    setUserImg,
+    updateUserProfile,
+    profileSaveHandler,
+  } = useContext(MainContext);
   // Check if user is logged in
 
   const navigate = useNavigate();
@@ -15,6 +25,10 @@ function User() {
     });
   }, []);
 
+  useEffect(() => {
+    if (userImg) profileSaveHandler(userName, userImg);
+  }, [userImg]);
+
   return (
     <div className="container d-flex flex-column align-items-center my-4">
       <UserProfile />
@@ -22,4 +36,4 @@ function User() {
   );
 }
 
-export default User;
+export default Profile;

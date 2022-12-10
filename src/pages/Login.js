@@ -20,7 +20,12 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('login');
-  const { userName } = useContext(MainContext);
+  const { userName, savedName, setUserName, addNewUser } =
+    useContext(MainContext);
+
+  console.log('From Login --');
+  console.log('Username: ', userName);
+  console.log('Savedname: ', savedName);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -52,6 +57,7 @@ function Login() {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((user) => {
         const { email, uid } = user.user;
+        console.log('From signup: ', userName);
         setDoc(doc(db, 'users', uid), { email, userName });
         navigate('/');
       })

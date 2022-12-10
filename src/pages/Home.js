@@ -9,8 +9,15 @@ import { db } from '../lib/Firebase';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
-  const { setTweets, setIsLoading, setError, userName, setUserName } =
-    useContext(MainContext);
+  const {
+    tweets,
+    setTweets,
+    setIsLoading,
+    setError,
+    addNewUser,
+    user,
+    getSavedName,
+  } = useContext(MainContext);
 
   // Check if user is logged in
   const navigate = useNavigate();
@@ -18,8 +25,14 @@ function Home() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       !user && navigate('/login');
+      if (user) addNewUser(user);
     });
   }, []);
+
+  // Updates the current username to the name saved in the database
+  useEffect(() => {
+    if (user.length) getSavedName();
+  }, [tweets]);
 
   // Fetch tweets from server
 
@@ -44,7 +57,6 @@ function Home() {
   // Call to fetch username and tweets from server
 
   useEffect(() => {
-    setUserName(JSON.parse(localStorage.getItem('username')) || userName);
     fetchData();
   }, []);
 

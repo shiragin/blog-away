@@ -14,15 +14,20 @@ function UserProfile() {
     setUserName,
     userImg,
     setUserImg,
-    profileSaveHandler: onProfileSave,
     getSavedName,
+    savedName,
+    setSavedName,
+    profileSaveHandler: onProfileSave,
   } = useContext(MainContext);
 
-  useEffect(() => {
-    if (!userName) setUserName('');
-  }, []);
-
   const [uploadedImg, setUploadedImg] = useState(null);
+
+  // useEffect(() => {
+  //   if (!userName || !savedName) {
+  //     setUserName('');
+  //     setSavedName('');
+  //   }
+  // }, []);
 
   function nameChangeHandler(e) {
     setUserName(e.target.value);
@@ -38,6 +43,7 @@ function UserProfile() {
     localStorage.setItem('username', JSON.stringify(trimmed));
     setUserName(trimmed);
     getImgurl();
+    console.log(userImg);
     onProfileSave(trimmed, userImg);
     setButtonClicked(true);
     getSavedName();
@@ -70,7 +76,7 @@ function UserProfile() {
             className="name-input"
             type="text"
             placeholder={'Say your name...'}
-            value={userName ? userName : ''}
+            value={userName}
           />
           {buttonClicked && <CheckCircle color="var(--blue)" size={30} />}
         </div>
