@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, doc, setDoc, addDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -20,7 +20,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('login');
-  const { loggedIn, userName, setUserName } = useContext(MainContext);
+  const { userName } = useContext(MainContext);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
