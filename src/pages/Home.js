@@ -2,7 +2,13 @@ import React, { useEffect } from 'react';
 import { useMainContext } from '../lib/MainContext';
 import TweetCreate from '../Components/Tweets/TweetCreate';
 import TweetList from '../Components/Tweets/TweetList';
-import { collection, getDocs, query, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  query,
+  onSnapshot,
+  doc,
+} from 'firebase/firestore';
 import { auth } from '../lib/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db } from '../lib/Firebase';
@@ -44,6 +50,7 @@ function Home() {
     try {
       const data = await getDocs(collection(db, 'tweets'));
       if (!data.docs.length) throw new Error('No tweets to show!');
+      console.log(data.docs);
       const newTweets = data.docs
         .map((doc) => ({
           ...doc.data(),
@@ -57,11 +64,30 @@ function Home() {
     setIsLoading(false);
   }
 
-  // Call to fetch username and tweets from server
+  // Call to tweets from firebase server
 
   useEffect(() => {
     fetchData();
-    // updateData();
+  }, []);
+
+  // sets a listerner for tweets updates from server
+
+  useEffect(() => {
+    const tweetsRef = collection(db, 'tweets');
+    console.log('hi');
+    const unsubscribe = onSnapshot(tweetsRef, (snapshot) => {
+      const newTweets = snapshot.docs
+        .map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+      setTweets(newTweets);
+      console.log(snapshot.docs);
+    });
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   // async function updateData() {
