@@ -15,7 +15,6 @@ function TweetCreate() {
     setError,
     error,
     isLoading,
-    userName,
     user,
     tweetSaveHandler: onTweetSave,
   } = useContext(MainContext);
@@ -34,7 +33,6 @@ function TweetCreate() {
   // Creates a new tweet object on submits and sends to app + resets error msg and textarea content
   function buttonClickHandler() {
     const newTweet = {
-      // userName: userName ? userName : '',
       user: user,
       content: tweet,
       date: new Date().toLocaleString('en-GB'),

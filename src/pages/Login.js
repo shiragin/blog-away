@@ -20,8 +20,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('login');
-  const { userName, savedName, setUserName, addNewUser } =
-    useContext(MainContext);
+  const { userName, savedName } = useContext(MainContext);
 
   console.log('From Login --');
   console.log('Username: ', userName);

@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/Firebase';
-import { MainContext } from '../../lib/MainContext';
 import anon from './anon.jpeg';
 
-function Tweet() {
-  const { user, date, content, id } = useContext(MainContext);
+function Tweet(props) {
+  const { user, date, content, id } = props.value;
   const userRef = doc(db, 'users', user);
+
   const [tweetUserName, setTweetUserName] = useState('');
   const [tweetUserImg, setTweetUserImg] = useState('');
 
