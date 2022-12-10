@@ -20,7 +20,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('login');
-  const { loggedIn, userName } = useContext(MainContext);
+  const { loggedIn, userName, setUserName } = useContext(MainContext);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {

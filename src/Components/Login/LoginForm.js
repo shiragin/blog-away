@@ -92,7 +92,7 @@ function LoginForm({
           <div className="button-text">
             {logType === 'signup'
               ? 'Already have an account?'
-              : 'No account yet'}
+              : 'No account yet?'}
           </div>
           {logType === 'signup' ? (
             <Button

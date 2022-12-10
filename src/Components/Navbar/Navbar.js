@@ -45,7 +45,9 @@ function Navbar() {
           </li>
         </div>
         <div className="d-flex justify-content-start gap-5">
-          <li className="navbar-link">Logged in as {savedName}</li>
+          {loggedIn && savedName && (
+            <li className="navbar-link">Logged in as {savedName}</li>
+          )}
           <li className="navbar-link">
             <NavLink
               to="/"

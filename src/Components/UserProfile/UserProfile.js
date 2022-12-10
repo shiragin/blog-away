@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { storage } from '../../lib/Firebase';
 import { MainContext } from '../../lib/MainContext';
@@ -17,6 +17,10 @@ function UserProfile() {
     profileSaveHandler: onProfileSave,
     getSavedName,
   } = useContext(MainContext);
+
+  useEffect(() => {
+    if (!userName) setUserName('');
+  }, []);
 
   const [uploadedImg, setUploadedImg] = useState(null);
 

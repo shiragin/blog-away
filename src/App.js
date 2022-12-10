@@ -5,7 +5,14 @@ import Navbar from './Components/Navbar/Navbar';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
-import { collection, doc, getDoc, addDoc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  addDoc,
+  updateDoc,
+  setDoc,
+} from 'firebase/firestore';
 import { db } from './lib/Firebase';
 import { auth } from './lib/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -37,11 +44,27 @@ function App() {
   // Get user details
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user.uid);
-      }
+      if (user) addNewUser(user);
     });
   }, []);
+
+  async function addNewUser(user) {
+    console.log(user);
+
+    setUser(user.uid);
+    const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      console.log('bye');
+      return;
+    } else {
+      console.log('hi');
+      const { email, uid } = user;
+      setUserName('');
+      setDoc(doc(db, 'users', uid), { email, userName });
+    }
+  }
 
   // Saves new name
   function profileSaveHandler(userName, userImg) {
@@ -65,7 +88,9 @@ function App() {
       const userProfile = await getDoc(userRef);
 
       if (userProfile.exists()) {
-        const { userName } = userProfile.data();
+        if (!userProfile.data()) return;
+        const userName = await userProfile?.data()?.userName;
+        if (!userName) return;
         setSavedName(userName);
         setUserName(userName);
       } else {
