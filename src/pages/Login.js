@@ -10,7 +10,7 @@ import {
 } from 'firebase/auth';
 import { db } from '../lib/Firebase';
 import { auth } from '../lib/Firebase';
-import LoginForm from '../Components/Login/LoginForm';
+import LoginForm from '../Components/UserProfile/LoginForm';
 import { useMainContext } from '../lib/MainContext';
 
 function Login() {
@@ -20,11 +20,8 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('login');
-  const { userName, savedName } = useMainContext();
-
-  console.log('From Login --');
-  console.log('Username: ', userName);
-  console.log('Savedname: ', savedName);
+  const { userName, savedName, userImg } = useMainContext();
+  console.log('From Login: ', userImg);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {

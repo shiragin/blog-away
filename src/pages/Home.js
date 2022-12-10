@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useMainContext } from '../lib/MainContext';
-import TweetCreate from './../Components/TweetCreate/TweetCreate';
-import TweetList from './../Components/TweetList/TweetList';
-import { collection, getDocs } from 'firebase/firestore';
+import TweetCreate from '../Components/Tweets/TweetCreate';
+import TweetList from '../Components/Tweets/TweetList';
+import { collection, getDocs, query, onSnapshot } from 'firebase/firestore';
 import { auth } from '../lib/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db } from '../lib/Firebase';
@@ -16,8 +16,11 @@ function Home() {
     setError,
     addNewUser,
     user,
-    getSavedName,
+    getSavedProfile,
+    userImg,
   } = useMainContext();
+
+  console.log('From Home: ', userImg);
 
   // Check if user is logged in
   const navigate = useNavigate();
@@ -31,7 +34,7 @@ function Home() {
 
   // Updates the current username to the name saved in the database
   useEffect(() => {
-    if (user.length) getSavedName();
+    if (user.length) getSavedProfile();
   }, [tweets]);
 
   // Fetch tweets from server
@@ -58,18 +61,34 @@ function Home() {
 
   useEffect(() => {
     fetchData();
+    // updateData();
   }, []);
+
+  // async function updateData() {
+  //   setIsLoading(true);
+  //   console.log(tweets);
+  //   try {
+  //     const data = await query(collection(db, 'tweets'));
+  //     const newTweets = onSnapshot(data, (querySnapshot) => {
+  //       querySnapshot.docs.map((doc) => setTweets(doc, ...tweets));
+  //     });
+  //     console.log(tweets);
+  //   } catch (error) {
+  //     setError(error.message);
+  //   }
+  //   setIsLoading(false);
+  // }
 
   // Set interval to fetch data
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetchData();
-    }, 20000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     fetchData();
+  //   }, 20000);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
 
   return (
     <div className="container d-flex flex-column align-items-center my-4">

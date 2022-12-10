@@ -19,6 +19,8 @@ function Profile() {
 
   const navigate = useNavigate();
 
+  console.log('From Profile: ', userImg);
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       !user && navigate('/login');

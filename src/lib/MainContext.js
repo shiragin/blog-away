@@ -58,17 +58,20 @@ export default function MainContextProvider({ children }) {
   }
 
   // gets the user's saved name from db
-  async function getSavedName() {
+  async function getSavedProfile() {
     try {
       const userRef = doc(db, 'users', user);
       const userProfile = await getDoc(userRef);
 
       if (userProfile.exists()) {
         if (!userProfile.data()) return;
+        const userImg = await userProfile?.data()?.userImg;
         const userName = await userProfile?.data()?.userName;
-        if (!userName) return;
-        setSavedName(userName);
-        setUserName(userName);
+        if (userName) {
+          setSavedName(userName);
+          setUserName(userName);
+        }
+        if (userImg) setUserImg(userImg);
       } else {
         throw new Error('No such user profile!');
       }
@@ -116,7 +119,7 @@ export default function MainContextProvider({ children }) {
         tweetSaveHandler,
         profileSaveHandler,
         updateUserProfile,
-        getSavedName,
+        getSavedProfile,
         addNewUser,
       }}
     >

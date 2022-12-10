@@ -52,8 +52,6 @@ function Navbar() {
               onClick={() => {
                 signOut(auth);
                 setSavedName('');
-                setUserName('');
-                setUserImg('');
               }}
             >
               Sign Out
