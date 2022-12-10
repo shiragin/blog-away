@@ -56,10 +56,8 @@ function App() {
     const userSnap = await getDoc(userRef);
 
     if (userSnap.exists()) {
-      console.log('bye');
       return;
     } else {
-      console.log('hi');
       const { email, uid } = user;
       setUserName('');
       setDoc(doc(db, 'users', uid), { email, userName });
