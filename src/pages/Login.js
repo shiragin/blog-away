@@ -11,7 +11,6 @@ import {
 import { db } from '../lib/Firebase';
 import { auth } from '../lib/Firebase';
 import LoginForm from '../Components/UserProfile/LoginForm';
-import { useMainContext } from '../lib/MainContext';
 import { useUserContext } from '../lib/UserContext';
 
 function Login() {

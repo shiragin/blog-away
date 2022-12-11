@@ -8,16 +8,11 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import './Navbar.css';
 
 function Navbar() {
-  const { setFilterTweets } = useMainContext();
+  const { filterTweets, setFilterTweets } = useMainContext();
 
-  const {
-    savedName,
-    setSavedName,
-    filterTweets,
-    setUser,
-    setUserName,
-    setUserImg,
-  } = useUserContext;
+  const { savedName, setSavedName, setUser, setUserName, setUserImg } =
+    useUserContext();
+
   const [loggedIn, setLoggedIn] = useState('');
 
   useEffect(() => {

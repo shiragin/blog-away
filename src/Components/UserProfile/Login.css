@@ -37,13 +37,24 @@
 
 .email-input:focus,
 .email-input:active,
+.email-input:focus-visible,
 .password-input:focus,
-.password-input:active {
+.password-input:active,
+.password-input:focus-visible {
   background-color: var(--dark);
   color: var(--white);
   box-shadow: none;
   outline: none;
   border-color: var(--offwhite);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: 0 0 0 30px var(--dark) inset;
+  -webkit-box-shadow: 0 0 0 30px var(--dark) inset !important;
+  -webkit-text-fill-color: var(--white) !important;
 }
 
 .email-input::placeholder,

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { storage } from '../../lib/Firebase';
-import { useMainContext } from '../../lib/MainContext';
 import { useUserContext } from '../../lib/UserContext';
 import { v4 } from 'uuid';
 import Form from 'react-bootstrap/Form';
@@ -10,10 +9,14 @@ import { CheckCircle } from 'react-bootstrap-icons';
 import './UserProfile.css';
 
 function UserProfile() {
-  const { getSavedProfile, profileSaveHandler: onProfileSave } =
-    useMainContext();
-
-  const { userName, setUserName, userImg, setUserImg } = useUserContext();
+  const {
+    userName,
+    setUserName,
+    userImg,
+    setUserImg,
+    getSavedProfile,
+    profileSaveHandler: onProfileSave,
+  } = useUserContext();
 
   const [uploadedImg, setUploadedImg] = useState(null);
 

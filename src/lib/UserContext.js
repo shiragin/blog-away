@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from './Firebase';
-import { useMainContext } from '../lib/MainContext';
 
 export const UserContext = createContext();
 
@@ -9,9 +8,7 @@ export function useUserContext() {
   return useContext(UserContext);
 }
 
-export default function MainContextProvider({ children }) {
-  // const {} = useMainContext();
-
+export default function UserContextProvider({ children }) {
   const [user, setUser] = useState('');
   const [userName, setUserName] = useState('');
   const [savedName, setSavedName] = useState('');

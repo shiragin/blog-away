@@ -1,25 +1,12 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../lib/Firebase';
-import { useMainContext } from '../lib/MainContext';
 import { useUserContext } from '../lib/UserContext';
 import UserProfile from '../Components/UserProfile/UserProfile';
 
 function Profile() {
-  // const { updateUserProfile, profileSaveHandler } = useMainContext();
-
-  const {
-    userImg,
-    userName,
-    savedName,
-    setUserName,
-    setUserImg,
-    updateUserProfile,
-    profileSaveHandler,
-  } = useUserContext();
-
-  // Check if user is logged in
+  const { userImg, userName, profileSaveHandler } = useUserContext();
 
   const navigate = useNavigate();
 

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainContextProvider from './lib/MainContext';
-import UserContextProvider from './lib/MainContext';
+import UserContextProvider from './lib/UserContext';
 import Navbar from './Components/Navbar/Navbar';
 import Home from './pages/Home';
 import Profile from './pages/Profile';

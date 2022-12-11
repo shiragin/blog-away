@@ -20,7 +20,7 @@ function Home() {
   const { tweets, setTweets, setIsLoading, setLastVisible, filterTweets } =
     useMainContext();
 
-  const { user, setUser, getSavedProfile, addNewUser } = useUserContext();
+  const { user, getSavedProfile, addNewUser } = useUserContext();
 
   // Check if user is logged in
   const navigate = useNavigate();

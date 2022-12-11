@@ -23,8 +23,6 @@ function Tweet(props) {
     getUserName();
   }, []);
 
-  console.log(filterTweets);
-
   return (
     <div
       key={id}

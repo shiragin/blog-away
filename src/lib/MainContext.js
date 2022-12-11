@@ -1,16 +1,12 @@
 import { createContext, useContext, useState } from 'react';
 import {
   collection,
-  doc,
   query,
   orderBy,
   startAfter,
   limit,
-  setDoc,
-  getDoc,
   getDocs,
   addDoc,
-  updateDoc,
   where,
 } from 'firebase/firestore';
 import { db } from './Firebase';
@@ -46,64 +42,6 @@ export default function MainContextProvider({ children }) {
       setIsLoading(false);
     }
   }
-
-  // // Saves new name/image upon change
-  // function profileSaveHandler(userName, userImg) {
-  //   setUserName(userName);
-  //   setUserImg(userImg);
-  //   updateUserProfile();
-  // }
-
-  // // updates the saved user profile
-  // async function updateUserProfile() {
-  //   const userRef = doc(db, 'users', user);
-  //   if (userRef) {
-  //     await updateDoc(userRef, {
-  //       userName: userName,
-  //       userImg: userImg,
-  //     });
-  //   }
-  // }
-
-  // // gets the user's saved name from db
-  // async function getSavedProfile() {
-  //   try {
-  //     const userRef = doc(db, 'users', user);
-  //     const userProfile = await getDoc(userRef);
-
-  //     if (userProfile.exists()) {
-  //       if (!userProfile.data()) return;
-  //       const userImg = await userProfile?.data()?.userImg;
-  //       const userName = await userProfile?.data()?.userName;
-  //       if (userName) {
-  //         setSavedName(userName);
-  //         setUserName(userName);
-  //       }
-  //       if (userImg) setUserImg(userImg);
-  //     } else {
-  //       throw new Error('No such user profile!');
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
-  // // adds new user to db
-  // async function addNewUser(user) {
-  //   setUser(user.uid);
-  //   const userRef = doc(db, 'users', user.uid);
-  //   const userSnap = await getDoc(userRef);
-
-  //   if (userSnap.exists()) {
-  //     return;
-  //   } else {
-  //     const { email, uid } = user;
-  //     setUserName('');
-  //     setSavedName('');
-  //     setUserImg('');
-  //     setDoc(doc(db, 'users', uid), { email, userName });
-  //   }
-  // }
 
   // Get next tweets from the db
   async function nextTweets() {
