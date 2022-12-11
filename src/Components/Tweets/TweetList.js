@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { nanoid } from 'nanoid';
-import { useMainContext } from '../../lib/MainContext';
+import { useTweetContext } from '../../lib/TweetContext';
 import { Spinner } from 'react-bootstrap';
 import Tweet from './Tweet';
 import './TweetList.css';
@@ -13,7 +13,7 @@ function TweetList() {
     nextTweets,
     handleScroll,
     filterTweets,
-  } = useMainContext();
+  } = useTweetContext();
 
   useEffect(() => {
     if (!isFetching) return;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, Link, NavLink } from 'react-router-dom';
-import { useMainContext } from '../../lib/MainContext';
+import { Outlet, NavLink } from 'react-router-dom';
+import { useTweetContext } from '../../lib/TweetContext';
 import { useUserContext } from '../../lib/UserContext';
 import { auth } from '../../lib/Firebase';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
@@ -8,7 +8,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import './Navbar.css';
 
 function Navbar() {
-  const { filterTweets, setFilterTweets } = useMainContext();
+  const { filterTweets, setFilterTweets } = useTweetContext();
 
   const { savedName, setSavedName, setUser, setUserName, setUserImg } =
     useUserContext();

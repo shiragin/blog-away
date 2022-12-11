@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useUserContext } from '../lib/UserContext';
-import { useMainContext } from '../lib/MainContext';
+import { useTweetContext } from '../lib/TweetContext';
 import TweetCreate from '../Components/Tweets/TweetCreate';
 import TweetList from '../Components/Tweets/TweetList';
 import {
@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const { tweets, setTweets, setIsLoading, setLastVisible, filterTweets } =
-    useMainContext();
+    useTweetContext();
 
   const { user, getSavedProfile, addNewUser } = useUserContext();
 

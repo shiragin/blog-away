@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import MainContextProvider from './lib/MainContext';
+import TweetContextProvider from './lib/TweetContext';
 import UserContextProvider from './lib/UserContext';
 import Navbar from './Components/Navbar/Navbar';
 import Home from './pages/Home';
@@ -9,7 +9,7 @@ import Login from './pages/Login';
 function App() {
   return (
     <UserContextProvider>
-      <MainContextProvider>
+      <TweetContextProvider>
         <BrowserRouter>
           <Navbar />
           <Routes>
@@ -18,7 +18,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </BrowserRouter>
-      </MainContextProvider>
+      </TweetContextProvider>
     </UserContextProvider>
   );
 }

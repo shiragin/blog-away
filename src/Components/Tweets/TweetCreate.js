@@ -4,7 +4,7 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import './TweetCreate.css';
-import { useMainContext } from '../../lib/MainContext';
+import { useTweetContext } from '../../lib/TweetContext';
 import { useUserContext } from '../../lib/UserContext';
 
 function TweetCreate() {
@@ -17,7 +17,7 @@ function TweetCreate() {
     error,
     isLoading,
     tweetSaveHandler: onTweetSave,
-  } = useMainContext();
+  } = useTweetContext();
 
   const { user } = useUserContext();
 
@@ -37,7 +37,7 @@ function TweetCreate() {
     const newTweet = {
       user: user,
       content: tweet,
-      date: new Date().toLocaleString('en-GB'),
+      date: moment().format('ddd MMMM Do, YYYY HH:mm:ss'),
     };
     onTweetSave(newTweet);
     setTweets([newTweet, ...tweets]);
