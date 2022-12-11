@@ -18,7 +18,12 @@ function Navbar() {
 
   return (
     <>
-      <ul className="navbar d-flex justify-content-between gap-5">
+      <ul
+        className="navbar d-flex justify-content-between gap-5"
+        style={{
+          background: filterTweets ? 'var(--grey-blue)' : 'var(--grey)',
+        }}
+      >
         <div className="d-flex justify-content-start gap-5">
           <li className="navbar-link">
             <NavLink
@@ -42,16 +47,23 @@ function Navbar() {
               Profile
             </NavLink>
           </li>
-          <li className="navbar-link">
+          {/* <li className="navbar-link">
             <NavLink onClick={() => setFilterTweets(!filterTweets)}>
-              Your tweets
+              {filterTweets ? 'All tweets' : 'My tweets'}
             </NavLink>
-          </li>
+          </li> */}
         </div>
         <div className="d-flex justify-content-start gap-5">
           {loggedIn && savedName && (
-            <li className="navbar-link">Logged in as {savedName}</li>
+            <li className="navbar-link">
+              Logged in as <span className="navbar-name">{savedName}</span>
+            </li>
           )}
+          <li className="navbar-link">
+            <NavLink onClick={() => setFilterTweets(!filterTweets)}>
+              {filterTweets ? 'Show all tweets' : 'Show my tweets'}
+            </NavLink>
+          </li>
           <li className="navbar-link">
             <NavLink
               to="/"

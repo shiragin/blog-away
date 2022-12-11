@@ -13,6 +13,7 @@ function TweetList() {
     tweetEnd,
     nextTweets,
     handleScroll,
+    filterTweets,
   } = useMainContext();
 
   useEffect(() => {
@@ -31,7 +32,10 @@ function TweetList() {
     <div className="mt-4 tweet-list d-flex flex-column gap-4 w-75">
       {tweets.map(({ id, user, date, content }) => {
         return (
-          <Tweet key={id ? id : nanoid()} value={{ user, date, id, content }} />
+          <Tweet
+            key={id ? id : nanoid()}
+            value={{ user, date, id, content, filterTweets }}
+          />
         );
       })}
       <div className="tweet-end d-flex justify-content-center">

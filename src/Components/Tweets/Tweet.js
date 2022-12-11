@@ -4,7 +4,7 @@ import { db } from '../../lib/Firebase';
 import anon from './anon.jpeg';
 
 function Tweet(props) {
-  const { user, date, content, id } = props.value;
+  const { user, date, content, id, filterTweets } = props.value;
   const userRef = doc(db, 'users', user);
 
   const [tweetUserName, setTweetUserName] = useState('');
@@ -23,10 +23,13 @@ function Tweet(props) {
     getUserName();
   }, []);
 
+  console.log(filterTweets);
+
   return (
     <div
       key={id}
       className="tweet-card d-flex flex-column justify-content-center"
+      // style={{ background: filterTweets ? 'var(--dark)' : 'var(--grey)' }}
     >
       <div className="tweet-header d-flex justify-content-between align-items-center">
         <div className="d-flex align-items-center gap-3">
