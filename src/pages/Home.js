@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useMainContext } from '../lib/MainContext';
 import TweetCreate from '../Components/Tweets/TweetCreate';
 import TweetList from '../Components/Tweets/TweetList';

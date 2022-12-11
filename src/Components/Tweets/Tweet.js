@@ -29,7 +29,6 @@ function Tweet(props) {
     <div
       key={id}
       className="tweet-card d-flex flex-column justify-content-center"
-      // style={{ background: filterTweets ? 'var(--dark)' : 'var(--grey)' }}
     >
       <div className="tweet-header d-flex justify-content-between align-items-center">
         <div className="d-flex align-items-center gap-3">

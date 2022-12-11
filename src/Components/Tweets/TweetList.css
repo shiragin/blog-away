@@ -22,7 +22,6 @@
   word-wrap: break-word;
   flex-wrap: wrap;
   margin: 0;
-  /* max-width: 45%; */
 }
 
 .tweet-date {

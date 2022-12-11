@@ -9,7 +9,6 @@ function TweetList() {
   const {
     tweets,
     isFetching,
-    setIsFetching,
     tweetEnd,
     nextTweets,
     handleScroll,

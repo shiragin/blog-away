@@ -47,11 +47,6 @@ function Navbar() {
               Profile
             </NavLink>
           </li>
-          {/* <li className="navbar-link">
-            <NavLink onClick={() => setFilterTweets(!filterTweets)}>
-              {filterTweets ? 'All tweets' : 'My tweets'}
-            </NavLink>
-          </li> */}
         </div>
         <div className="d-flex justify-content-start gap-5">
           {loggedIn && savedName && (
