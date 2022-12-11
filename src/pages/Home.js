@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useMainContext } from '../lib/MainContext';
 import TweetCreate from '../Components/Tweets/TweetCreate';
 import TweetList from '../Components/Tweets/TweetList';
@@ -8,6 +8,11 @@ import {
   query,
   onSnapshot,
   doc,
+  orderBy,
+  limit,
+  startAfter,
+  startAt,
+  endAt,
 } from 'firebase/firestore';
 import { auth } from '../lib/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -26,7 +31,8 @@ function Home() {
     userImg,
   } = useMainContext();
 
-  console.log('From Home: ', userImg);
+  const [lastVisible, setLastVisible] = useState('');
+  const listInnerRef = useRef();
 
   // Check if user is logged in
   const navigate = useNavigate();
@@ -43,81 +49,81 @@ function Home() {
     if (user.length) getSavedProfile();
   }, [tweets]);
 
-  // Fetch tweets from server
+  // Call to tweets from firebase server
 
-  async function fetchData() {
+  useEffect(() => {
     setIsLoading(true);
     try {
-      const data = await getDocs(collection(db, 'tweets'));
-      if (!data.docs.length) throw new Error('No tweets to show!');
-      console.log(data.docs);
-      const newTweets = data.docs
-        .map((doc) => ({
+      const tweetsRef = query(
+        collection(db, 'tweets'),
+        orderBy('date', 'desc'),
+        limit(10)
+      );
+      const unsubscribe = onSnapshot(tweetsRef, (snapshot) => {
+        const newTweets = snapshot.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
-        }))
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
-      setTweets(newTweets);
+        }));
+        setTweets(newTweets);
+        setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
+        return () => {
+          unsubscribe();
+        };
+      });
     } catch (error) {
       setError(error.message);
     }
     setIsLoading(false);
-  }
-
-  // Call to tweets from firebase server
-
-  useEffect(() => {
-    fetchData();
   }, []);
 
-  // sets a listerner for tweets updates from server
+  async function nextTweets() {
+    const tweetsRef = collection(db, 'tweets');
+    const data = query(
+      tweetsRef,
+      orderBy('date', 'desc'),
+      // startAfter(lastVisible), // Pass the reference
+      limit(10)
+    );
+    // const documents = await getDocs(data);
+    // console.log(documents.docs());
+    updateTweets(tweetsRef);
+  }
+
+  async function updateTweets(tweetsRef) {
+    const unsubscribe = onSnapshot(tweetsRef, (snapshot) => {
+      const newTweets = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setTweets((prev) => {
+        return [...newTweets];
+      });
+    });
+  }
 
   useEffect(() => {
-    const tweetsRef = collection(db, 'tweets');
-    console.log('hi');
-    const unsubscribe = onSnapshot(tweetsRef, (snapshot) => {
-      const newTweets = snapshot.docs
-        .map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }))
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
-      setTweets(newTweets);
-      console.log(snapshot.docs);
-    });
+    function handleScroll() {
+      if (
+        listInnerRef.current.getBoundingClientRect().bottom <=
+        window.innerHeight
+      ) {
+        console.log('hi');
+        nextTweets();
+      }
+    }
+
+    window.addEventListener('scroll', (e) => handleScroll(e));
+
     return () => {
-      unsubscribe();
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  // async function updateData() {
-  //   setIsLoading(true);
-  //   console.log(tweets);
-  //   try {
-  //     const data = await query(collection(db, 'tweets'));
-  //     const newTweets = onSnapshot(data, (querySnapshot) => {
-  //       querySnapshot.docs.map((doc) => setTweets(doc, ...tweets));
-  //     });
-  //     console.log(tweets);
-  //   } catch (error) {
-  //     setError(error.message);
-  //   }
-  //   setIsLoading(false);
-  // }
-
-  // Set interval to fetch data
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetchData();
-  //   }, 20000);
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
-
   return (
-    <div className="container d-flex flex-column align-items-center my-4">
+    <div
+      className="container d-flex flex-column align-items-center my-4"
+      ref={listInnerRef}
+    >
       <TweetCreate />
       <TweetList />
     </div>

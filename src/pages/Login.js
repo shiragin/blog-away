@@ -20,7 +20,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('login');
-  const { userName, savedName, userImg } = useMainContext();
+  const { userName, userImg } = useMainContext();
   console.log('From Login: ', userImg);
 
   useEffect(() => {
