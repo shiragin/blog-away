@@ -28,7 +28,8 @@
   color: var(--white);
 }
 
-a.navbar-link:hover {
-  color: var(--blue);
-  transition: color 0.2s ease-in-out;
+.navbar-link a:hover {
+  border-bottom: 1px solid var(--blue);
+  /* transform: scale(1.5); */
+  /* transition: color 0.2s ease-in-out; */
 }

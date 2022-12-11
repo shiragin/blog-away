@@ -11,6 +11,7 @@ import {
   getDocs,
   addDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { db } from './Firebase';
 
@@ -33,6 +34,7 @@ export default function MainContextProvider({ children }) {
   const [lastVisible, setLastVisible] = useState('');
   const [isFetching, setIsFetching] = useState('');
   const [tweetEnd, setTweetEnd] = useState(false);
+  const [filterTweets, setFilterTweets] = useState(false);
 
   // Saves new tweet to server
   async function tweetSaveHandler(newTweet) {
@@ -109,12 +111,20 @@ export default function MainContextProvider({ children }) {
   async function nextTweets() {
     setIsLoading(true);
     const tweetsRef = collection(db, 'tweets');
-    const tweetQuery = query(
-      tweetsRef,
-      orderBy('date', 'desc'),
-      startAfter(lastVisible),
-      limit(10)
-    );
+    const tweetQuery = filterTweets
+      ? query(
+          tweetsRef,
+          where('user', '==', user),
+          orderBy('date', 'desc'),
+          startAfter(lastVisible),
+          limit(10)
+        )
+      : query(
+          tweetsRef,
+          orderBy('date', 'desc'),
+          startAfter(lastVisible),
+          limit(10)
+        );
     const data = await getDocs(tweetQuery);
     if (data.empty) {
       window.removeEventListener('scroll', handleScroll);
@@ -178,6 +188,8 @@ export default function MainContextProvider({ children }) {
         setTweetEnd,
         nextTweets,
         handleScroll,
+        filterTweets,
+        setFilterTweets,
       }}
     >
       {children}

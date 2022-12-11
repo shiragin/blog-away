@@ -34,7 +34,6 @@ function UserProfile() {
     localStorage.setItem('username', JSON.stringify(trimmed));
     setUserName(trimmed);
     getImgurl();
-    console.log(userImg);
     onProfileSave(trimmed, userImg);
     setButtonClicked(true);
     getSavedProfile();

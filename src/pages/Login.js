@@ -21,7 +21,6 @@ function Login() {
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('login');
   const { userName, userImg } = useMainContext();
-  console.log('From Login: ', userImg);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -53,7 +52,6 @@ function Login() {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((user) => {
         const { email, uid } = user.user;
-        console.log('From signup: ', userName);
         setDoc(doc(db, 'users', uid), { email, userName });
         navigate('/');
       })

@@ -8,6 +8,7 @@ import {
   onSnapshot,
   orderBy,
   limit,
+  where,
 } from 'firebase/firestore';
 import { auth } from '../lib/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -23,6 +24,7 @@ function Home() {
     user,
     getSavedProfile,
     setLastVisible,
+    filterTweets,
   } = useMainContext();
 
   // Check if user is logged in
@@ -41,13 +43,18 @@ function Home() {
   }, [tweets]);
 
   // Call to tweets from firebase server w/ live update
-
-  useEffect(() => {
-    setIsLoading(true);
+  async function fetchData() {
     const tweetsRef = collection(db, 'tweets');
-    const data = query(tweetsRef, orderBy('date', 'desc'), limit(10));
+    const data = filterTweets
+      ? query(
+          tweetsRef,
+          where('user', '==', user),
+          orderBy('date', 'desc'),
+          limit(10)
+        )
+      : query(tweetsRef, orderBy('date', 'desc'), limit(10));
     if (!data.empty) {
-      const unsubscribe = onSnapshot(data, (snapshot) => {
+      onSnapshot(data, (snapshot) => {
         const newTweets = snapshot.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
@@ -56,11 +63,21 @@ function Home() {
         setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
         setIsLoading(false);
       });
-      return () => {
-        unsubscribe();
-      };
     }
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchData();
+    return () => {
+      // unsubscribe();
+    };
   }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchData();
+  }, [filterTweets]);
 
   return (
     <div className="container d-flex flex-column align-items-center my-4">

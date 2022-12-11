@@ -6,7 +6,8 @@ import { signOut, onAuthStateChanged } from 'firebase/auth';
 import './Navbar.css';
 
 function Navbar() {
-  const { savedName, setSavedName, setUserName, setUserImg } = useMainContext();
+  const { savedName, setSavedName, filterTweets, setFilterTweets } =
+    useMainContext();
   const [loggedIn, setLoggedIn] = useState('');
 
   useEffect(() => {
@@ -41,6 +42,11 @@ function Navbar() {
               Profile
             </NavLink>
           </li>
+          <li className="navbar-link">
+            <NavLink onClick={() => setFilterTweets(!filterTweets)}>
+              Your tweets
+            </NavLink>
+          </li>
         </div>
         <div className="d-flex justify-content-start gap-5">
           {loggedIn && savedName && (
@@ -50,8 +56,8 @@ function Navbar() {
             <NavLink
               to="/"
               onClick={() => {
-                signOut(auth);
                 setSavedName('');
+                signOut(auth);
               }}
             >
               Sign Out
