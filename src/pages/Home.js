@@ -50,65 +50,25 @@ function Home() {
     if (user.length) getSavedProfile();
   }, [tweets]);
 
-  // Call to tweets from firebase server
+  // Call to tweets from firebase server w/ live update
 
-  async function fetchData() {
-    setIsLoading(true);
-    try {
-      const tweetsRef = collection(db, 'tweets');
-      const tweetQuery = query(tweetsRef, orderBy('date', 'desc'), limit(10));
-      const data = await getDocs(tweetQuery);
-      if (!data.docs.length) throw new Error('No tweets to show!');
-      const newTweets = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setTweets(newTweets);
-      setLastVisible(data.docs[data.docs.length - 1]);
-    } catch (error) {
-      setError(error.message);
+  useEffect(() => {
+    const tweetsRef = collection(db, 'tweets');
+    const data = query(tweetsRef, orderBy('date', 'desc'), limit(10));
+    if (!data.empty) {
+      const unsubscribe = onSnapshot(data, (snapshot) => {
+        const newTweets = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setTweets(newTweets);
+        setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
+      });
+      return () => {
+        unsubscribe();
+      };
     }
-    setIsLoading(false);
-  }
-
-  // Call to fetch username and tweets from server
-
-  useEffect(() => {
-    fetchData();
   }, []);
-
-  useEffect(() => {
-    setLastVisible(tweets[tweets.length - 1]);
-  }, [tweets]);
-
-  // async function fetchData() {
-  //   setIsLoading(true);
-  //   try {
-  //     const q = query(
-  //       collection(db, 'tweets'),
-  //       orderBy('date', 'desc'),
-  //       limit(10)
-  //     );
-  //     const data = await getDocs(q);
-  //     if (!data.docs.length) throw new Error('No tweets to show!');
-  //     const newTweets =  data.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     }));
-  //     setTweets(newTweets);
-  //     setLastVisible(data.docs[data.docs.length - 1]);
-  //     setTimeout(() => {
-  //       console.log(lastVisible);
-  //     }, 2000);
-  //   } catch (error) {
-  //     setError(error.message);
-  //   }
-  //   setIsLoading(false);
-  // }
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
 
   async function nextTweets() {
     console.log(tweets);
@@ -117,7 +77,7 @@ function Home() {
     const tweetQuery = query(
       tweetsRef,
       orderBy('date', 'desc'),
-      startAfter(lastVisible.date),
+      startAfter(lastVisible),
       limit(10)
     );
     const data = await getDocs(tweetQuery);
@@ -135,54 +95,6 @@ function Home() {
       setLastVisible(data.docs[data.docs.length - 1]);
     }
   }
-
-  // async function updateState(documents) {
-  //   console.log(documents);
-  // }
-  //   const tweetsRef = collection(db, 'tweets');
-  //   const data = query(
-  //     tweetsRef,
-  //     orderBy('date', 'desc'),
-  //     startAfter(lastVisible), // Pass the reference
-  //     limit(10)
-  //   );
-  //   if (!data.empty) {
-  //     const unsubscribe = onSnapshot(data, (snapshot) => {
-  //       const newTweets = snapshot.docs.map((doc) => ({
-  //         ...doc.data(),
-  //         id: doc.id,
-  //       }));
-  //       console.log(newTweets);
-  //     });
-  //     if (data?.docs[data.docs.length - 1]) {
-  //       setLastVisible(data.docs[data.docs.length - 1]);
-  //     }
-
-  // const unsubscribe = onSnapshot(data, (snapshot) => {
-  //   const newTweets = snapshot.docs.map((doc) => ({
-  //     ...doc.data(),
-  //     id: doc.id,
-  //   }));
-  //   console.log(newTweets);
-  // setTweets((prev) => {
-  //   return [...newTweets, ...prev];
-  // });
-
-  // const documents = await getDocs(data);
-  // console.log(documents.docs());
-  // updateTweets(tweetsRef);
-
-  // async function updateTweets(tweetsRef) {
-  //   const unsubscribe = onSnapshot(tweetsRef, (snapshot) => {
-  //     const newTweets = snapshot.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     }));
-  //     setTweets((prev) => {
-  //       return [...newTweets];
-  //     });
-  //   });
-  // }
 
   // useEffect(() => {
   //   function handleScroll() {
