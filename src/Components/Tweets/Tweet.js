@@ -9,11 +9,12 @@ function Tweet(props) {
 
   const [tweetUserName, setTweetUserName] = useState('');
   const [tweetUserImg, setTweetUserImg] = useState('');
+  const [ImgLoading, setImgLoading] = useState(true);
 
   async function getUserName() {
     const user = await getDoc(userRef);
-    const { userName } = await user.data();
-    const { userImg } = await user.data();
+    const { userName } = user.data();
+    const { userImg } = user.data();
     userName ? setTweetUserName(userName) : setTweetUserName('Anon');
     userImg ? setTweetUserImg(userImg) : setTweetUserImg(anon);
   }
@@ -29,7 +30,12 @@ function Tweet(props) {
     >
       <div className="tweet-header d-flex justify-content-between align-items-center">
         <div className="d-flex align-items-center gap-3">
-          <img src={tweetUserImg} className="tweet-img" />
+          <img
+            src={tweetUserImg}
+            className="tweet-img"
+            style={{ display: ImgLoading ? 'none' : 'block' }}
+            onLoad={() => setImgLoading(false)}
+          />
           <p className="tweet-username">{tweetUserName}</p>
         </div>
         <p className="tweet-date">{date}</p>

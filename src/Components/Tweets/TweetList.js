@@ -34,7 +34,6 @@ function TweetList() {
           <Tweet key={id ? id : nanoid()} value={{ user, date, id, content }} />
         );
       })}
-      {tweetEnd !== '' && <div className="tweet-end">{tweetEnd}</div>}
       <div className="tweet-end d-flex justify-content-center">
         {tweetEnd && 'No more tweets to show!'}
         {tweetEnd ||
