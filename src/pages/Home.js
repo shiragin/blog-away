@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useMainContext } from '../lib/MainContext';
 import TweetCreate from '../Components/Tweets/TweetCreate';
 import TweetList from '../Components/Tweets/TweetList';
@@ -25,6 +25,7 @@ function Home() {
     tweets,
     setTweets,
     setIsLoading,
+    isLoading,
     setError,
     addNewUser,
     user,
@@ -33,7 +34,8 @@ function Home() {
   } = useMainContext();
 
   const [lastVisible, setLastVisible] = useState('');
-  const listInnerRef = useRef();
+  const [isFetching, setIsFetching] = useState('');
+  const ref = useRef();
 
   // Check if user is logged in
   const navigate = useNavigate();
@@ -53,6 +55,7 @@ function Home() {
   // Call to tweets from firebase server w/ live update
 
   useEffect(() => {
+    setIsLoading(true);
     const tweetsRef = collection(db, 'tweets');
     const data = query(tweetsRef, orderBy('date', 'desc'), limit(10));
     if (!data.empty) {
@@ -63,6 +66,7 @@ function Home() {
         }));
         setTweets(newTweets);
         setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
+        setIsLoading(false);
       });
       return () => {
         unsubscribe();
@@ -71,8 +75,9 @@ function Home() {
   }, []);
 
   async function nextTweets() {
-    console.log(tweets);
+    setIsLoading(true);
     console.log(lastVisible);
+    console.log(tweets);
     const tweetsRef = collection(db, 'tweets');
     const tweetQuery = query(
       tweetsRef,
@@ -94,33 +99,22 @@ function Home() {
     if (data?.docs[data.docs.length - 1]) {
       setLastVisible(data.docs[data.docs.length - 1]);
     }
+    setIsLoading(false);
+    setIsFetching(false);
   }
-
-  // useEffect(() => {
-  //   function handleScroll() {
-  //     if (
-  //       listInnerRef.current.getBoundingClientRect().bottom <=
-  //       window.innerHeight
-  //     ) {
-  //       nextTweets();
-  //     }
-  //   }
-
-  //   window.addEventListener('scroll', (e) => handleScroll(e));
-
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll);
-  //   };
-  // }, []);
 
   return (
     <div
+      // ref={ref}
       className="container d-flex flex-column align-items-center my-4"
-      // ref={listInnerRef}
     >
       <TweetCreate />
-      <TweetList />
-      <Button onClick={nextTweets}>More</Button>
+      <TweetList
+        onFetchMore={nextTweets}
+        isFetching={isFetching}
+        setIsFetching={setIsFetching}
+      />
+      {/* <Button onClick={nextTweets}>More</Button> */}
     </div>
   );
 }

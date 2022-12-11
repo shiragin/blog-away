@@ -17,8 +17,12 @@
   letter-spacing: 0.5px;
 }
 
-html {
+/* html {
   overflow: scroll;
+} */
+
+body {
+  overflow-y: scroll;
 }
 
 body::-webkit-scrollbar {
