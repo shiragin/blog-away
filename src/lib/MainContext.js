@@ -14,6 +14,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from './Firebase';
+import { useUserContext } from './UserContext';
 
 export const MainContext = createContext();
 
@@ -26,15 +27,12 @@ export default function MainContextProvider({ children }) {
   const [tweets, setTweets] = useState([]);
   const [tempTweet, setTempTweet] = useState('');
   const [error, setError] = useState('');
-  const [user, setUser] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [savedName, setSavedName] = useState('');
-  const [userImg, setUserImg] = useState('');
   const [lastVisible, setLastVisible] = useState('');
   const [isFetching, setIsFetching] = useState('');
   const [tweetEnd, setTweetEnd] = useState(false);
   const [filterTweets, setFilterTweets] = useState(false);
+  const { user } = useUserContext();
 
   // Saves new tweet to server
   async function tweetSaveHandler(newTweet) {
@@ -49,63 +47,63 @@ export default function MainContextProvider({ children }) {
     }
   }
 
-  // Saves new name/image upon change
-  function profileSaveHandler(userName, userImg) {
-    setUserName(userName);
-    setUserImg(userImg);
-    updateUserProfile();
-  }
+  // // Saves new name/image upon change
+  // function profileSaveHandler(userName, userImg) {
+  //   setUserName(userName);
+  //   setUserImg(userImg);
+  //   updateUserProfile();
+  // }
 
-  // updates the saved user profile
-  async function updateUserProfile() {
-    const userRef = doc(db, 'users', user);
-    if (userRef) {
-      await updateDoc(userRef, {
-        userName: userName,
-        userImg: userImg,
-      });
-    }
-  }
+  // // updates the saved user profile
+  // async function updateUserProfile() {
+  //   const userRef = doc(db, 'users', user);
+  //   if (userRef) {
+  //     await updateDoc(userRef, {
+  //       userName: userName,
+  //       userImg: userImg,
+  //     });
+  //   }
+  // }
 
-  // gets the user's saved name from db
-  async function getSavedProfile() {
-    try {
-      const userRef = doc(db, 'users', user);
-      const userProfile = await getDoc(userRef);
+  // // gets the user's saved name from db
+  // async function getSavedProfile() {
+  //   try {
+  //     const userRef = doc(db, 'users', user);
+  //     const userProfile = await getDoc(userRef);
 
-      if (userProfile.exists()) {
-        if (!userProfile.data()) return;
-        const userImg = await userProfile?.data()?.userImg;
-        const userName = await userProfile?.data()?.userName;
-        if (userName) {
-          setSavedName(userName);
-          setUserName(userName);
-        }
-        if (userImg) setUserImg(userImg);
-      } else {
-        throw new Error('No such user profile!');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  //     if (userProfile.exists()) {
+  //       if (!userProfile.data()) return;
+  //       const userImg = await userProfile?.data()?.userImg;
+  //       const userName = await userProfile?.data()?.userName;
+  //       if (userName) {
+  //         setSavedName(userName);
+  //         setUserName(userName);
+  //       }
+  //       if (userImg) setUserImg(userImg);
+  //     } else {
+  //       throw new Error('No such user profile!');
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
-  // adds new user to db
-  async function addNewUser(user) {
-    setUser(user.uid);
-    const userRef = doc(db, 'users', user.uid);
-    const userSnap = await getDoc(userRef);
+  // // adds new user to db
+  // async function addNewUser(user) {
+  //   setUser(user.uid);
+  //   const userRef = doc(db, 'users', user.uid);
+  //   const userSnap = await getDoc(userRef);
 
-    if (userSnap.exists()) {
-      return;
-    } else {
-      const { email, uid } = user;
-      setUserName('');
-      setSavedName('');
-      setUserImg('');
-      setDoc(doc(db, 'users', uid), { email, userName });
-    }
-  }
+  //   if (userSnap.exists()) {
+  //     return;
+  //   } else {
+  //     const { email, uid } = user;
+  //     setUserName('');
+  //     setSavedName('');
+  //     setUserImg('');
+  //     setDoc(doc(db, 'users', uid), { email, userName });
+  //   }
+  // }
 
   // Get next tweets from the db
   async function nextTweets() {
@@ -165,21 +163,9 @@ export default function MainContextProvider({ children }) {
         setTempTweet,
         error,
         setError,
-        user,
-        setUser,
-        userName,
-        setUserName,
         isLoading,
         setIsLoading,
-        savedName,
-        setSavedName,
-        userImg,
-        setUserImg,
         tweetSaveHandler,
-        profileSaveHandler,
-        updateUserProfile,
-        getSavedProfile,
-        addNewUser,
         lastVisible,
         setLastVisible,
         isFetching,

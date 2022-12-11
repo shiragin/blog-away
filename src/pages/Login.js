@@ -12,6 +12,7 @@ import { db } from '../lib/Firebase';
 import { auth } from '../lib/Firebase';
 import LoginForm from '../Components/UserProfile/LoginForm';
 import { useMainContext } from '../lib/MainContext';
+import { useUserContext } from '../lib/UserContext';
 
 function Login() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('login');
-  const { userName } = useMainContext();
+  const { userName } = useUserContext();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {

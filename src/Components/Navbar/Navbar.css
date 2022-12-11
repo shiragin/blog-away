@@ -37,9 +37,11 @@
   color: var(--white);
 }
 
-li.dropdown-item a {
+li.dropdown-item a,
+li.dropdown-item a:active {
   color: var(--grey-text);
   text-decoration: none;
+  display: block;
 }
 
 li.dropdown-item a:hover {

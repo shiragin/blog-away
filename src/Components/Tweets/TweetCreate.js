@@ -5,6 +5,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import './TweetCreate.css';
 import { useMainContext } from '../../lib/MainContext';
+import { useUserContext } from '../../lib/UserContext';
 
 function TweetCreate() {
   const {
@@ -15,9 +16,10 @@ function TweetCreate() {
     setError,
     error,
     isLoading,
-    user,
     tweetSaveHandler: onTweetSave,
   } = useMainContext();
+
+  const { user } = useUserContext();
 
   const [tweet, setTweet] = useState(tempTweet || '');
 

@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink } from 'react-router-dom';
 import { useMainContext } from '../../lib/MainContext';
+import { useUserContext } from '../../lib/UserContext';
 import { auth } from '../../lib/Firebase';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import './Navbar.css';
 
 function Navbar() {
-  const { savedName, setSavedName, filterTweets, setFilterTweets } =
-    useMainContext();
+  const { setFilterTweets } = useMainContext();
+
+  const {
+    savedName,
+    setSavedName,
+    filterTweets,
+    setUser,
+    setUserName,
+    setUserImg,
+  } = useUserContext;
   const [loggedIn, setLoggedIn] = useState('');
 
   useEffect(() => {
@@ -75,6 +84,9 @@ function Navbar() {
                 <NavLink
                   to="/"
                   onClick={() => {
+                    setUserImg('');
+                    setUserName('');
+                    setUser('');
                     setSavedName('');
                     signOut(auth);
                   }}

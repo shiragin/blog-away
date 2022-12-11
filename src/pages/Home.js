@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useUserContext } from '../lib/UserContext';
 import { useMainContext } from '../lib/MainContext';
 import TweetCreate from '../Components/Tweets/TweetCreate';
 import TweetList from '../Components/Tweets/TweetList';
@@ -16,16 +17,10 @@ import { db } from '../lib/Firebase';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
-  const {
-    tweets,
-    setTweets,
-    setIsLoading,
-    addNewUser,
-    user,
-    getSavedProfile,
-    setLastVisible,
-    filterTweets,
-  } = useMainContext();
+  const { tweets, setTweets, setIsLoading, setLastVisible, filterTweets } =
+    useMainContext();
+
+  const { user, setUser, getSavedProfile, addNewUser } = useUserContext();
 
   // Check if user is logged in
   const navigate = useNavigate();
