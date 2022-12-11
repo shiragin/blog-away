@@ -83,6 +83,7 @@ function Navbar() {
                     setUserName('');
                     setUser('');
                     setSavedName('');
+                    setFilterTweets(false);
                     signOut(auth);
                   }}
                 >
