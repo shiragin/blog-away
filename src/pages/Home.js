@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useMainContext } from '../lib/MainContext';
 import TweetCreate from '../Components/Tweets/TweetCreate';
 import TweetList from '../Components/Tweets/TweetList';
+import Button from 'react-bootstrap/Button';
 import {
   collection,
   getDocs,
@@ -51,81 +52,163 @@ function Home() {
 
   // Call to tweets from firebase server
 
-  useEffect(() => {
+  async function fetchData() {
     setIsLoading(true);
     try {
-      const tweetsRef = query(
-        collection(db, 'tweets'),
-        orderBy('date', 'desc'),
-        limit(10)
-      );
-      const unsubscribe = onSnapshot(tweetsRef, (snapshot) => {
-        const newTweets = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setTweets(newTweets);
-        setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
-        return () => {
-          unsubscribe();
-        };
-      });
+      const tweetsRef = collection(db, 'tweets');
+      const tweetQuery = query(tweetsRef, orderBy('date', 'desc'), limit(10));
+      const data = await getDocs(tweetQuery);
+      if (!data.docs.length) throw new Error('No tweets to show!');
+      const newTweets = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setTweets(newTweets);
+      setLastVisible(data.docs[data.docs.length - 1]);
     } catch (error) {
       setError(error.message);
     }
     setIsLoading(false);
-  }, []);
-
-  async function nextTweets() {
-    const tweetsRef = collection(db, 'tweets');
-    const data = query(
-      tweetsRef,
-      orderBy('date', 'desc'),
-      // startAfter(lastVisible), // Pass the reference
-      limit(10)
-    );
-    // const documents = await getDocs(data);
-    // console.log(documents.docs());
-    updateTweets(tweetsRef);
   }
 
-  async function updateTweets(tweetsRef) {
-    const unsubscribe = onSnapshot(tweetsRef, (snapshot) => {
-      const newTweets = snapshot.docs.map((doc) => ({
+  // Call to fetch username and tweets from server
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    setLastVisible(tweets[tweets.length - 1]);
+  }, [tweets]);
+
+  // async function fetchData() {
+  //   setIsLoading(true);
+  //   try {
+  //     const q = query(
+  //       collection(db, 'tweets'),
+  //       orderBy('date', 'desc'),
+  //       limit(10)
+  //     );
+  //     const data = await getDocs(q);
+  //     if (!data.docs.length) throw new Error('No tweets to show!');
+  //     const newTweets =  data.docs.map((doc) => ({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     }));
+  //     setTweets(newTweets);
+  //     setLastVisible(data.docs[data.docs.length - 1]);
+  //     setTimeout(() => {
+  //       console.log(lastVisible);
+  //     }, 2000);
+  //   } catch (error) {
+  //     setError(error.message);
+  //   }
+  //   setIsLoading(false);
+  // }
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  async function nextTweets() {
+    console.log(tweets);
+    console.log(lastVisible);
+    const tweetsRef = collection(db, 'tweets');
+    const tweetQuery = query(
+      tweetsRef,
+      orderBy('date', 'desc'),
+      startAfter(lastVisible.date),
+      limit(10)
+    );
+    const data = await getDocs(tweetQuery);
+    console.log(data);
+    if (!data.empty) {
+      const newTweets = data.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       }));
       setTweets((prev) => {
-        return [...newTweets];
+        return [...prev, ...newTweets];
       });
-    });
+    }
+    if (data?.docs[data.docs.length - 1]) {
+      setLastVisible(data.docs[data.docs.length - 1]);
+    }
   }
 
-  useEffect(() => {
-    function handleScroll() {
-      if (
-        listInnerRef.current.getBoundingClientRect().bottom <=
-        window.innerHeight
-      ) {
-        console.log('hi');
-        nextTweets();
-      }
-    }
+  // async function updateState(documents) {
+  //   console.log(documents);
+  // }
+  //   const tweetsRef = collection(db, 'tweets');
+  //   const data = query(
+  //     tweetsRef,
+  //     orderBy('date', 'desc'),
+  //     startAfter(lastVisible), // Pass the reference
+  //     limit(10)
+  //   );
+  //   if (!data.empty) {
+  //     const unsubscribe = onSnapshot(data, (snapshot) => {
+  //       const newTweets = snapshot.docs.map((doc) => ({
+  //         ...doc.data(),
+  //         id: doc.id,
+  //       }));
+  //       console.log(newTweets);
+  //     });
+  //     if (data?.docs[data.docs.length - 1]) {
+  //       setLastVisible(data.docs[data.docs.length - 1]);
+  //     }
 
-    window.addEventListener('scroll', (e) => handleScroll(e));
+  // const unsubscribe = onSnapshot(data, (snapshot) => {
+  //   const newTweets = snapshot.docs.map((doc) => ({
+  //     ...doc.data(),
+  //     id: doc.id,
+  //   }));
+  //   console.log(newTweets);
+  // setTweets((prev) => {
+  //   return [...newTweets, ...prev];
+  // });
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  // const documents = await getDocs(data);
+  // console.log(documents.docs());
+  // updateTweets(tweetsRef);
+
+  // async function updateTweets(tweetsRef) {
+  //   const unsubscribe = onSnapshot(tweetsRef, (snapshot) => {
+  //     const newTweets = snapshot.docs.map((doc) => ({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     }));
+  //     setTweets((prev) => {
+  //       return [...newTweets];
+  //     });
+  //   });
+  // }
+
+  // useEffect(() => {
+  //   function handleScroll() {
+  //     if (
+  //       listInnerRef.current.getBoundingClientRect().bottom <=
+  //       window.innerHeight
+  //     ) {
+  //       nextTweets();
+  //     }
+  //   }
+
+  //   window.addEventListener('scroll', (e) => handleScroll(e));
+
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
 
   return (
     <div
       className="container d-flex flex-column align-items-center my-4"
-      ref={listInnerRef}
+      // ref={listInnerRef}
     >
       <TweetCreate />
       <TweetList />
+      <Button onClick={nextTweets}>More</Button>
     </div>
   );
 }
