@@ -38,3 +38,15 @@
   line-height: 1.4;
   justify-self: flex-end;
 }
+
+.tweet-end {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--offwhite);
+  text-align: center;
+  padding-bottom: 0.6rem;
+}
+
+.tweet-spinner {
+  justify-self: center;
+}

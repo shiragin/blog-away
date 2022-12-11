@@ -19,6 +19,7 @@ import { auth } from '../lib/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db } from '../lib/Firebase';
 import { useNavigate } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
 
 function Home() {
   const {
@@ -35,6 +36,7 @@ function Home() {
 
   const [lastVisible, setLastVisible] = useState('');
   const [isFetching, setIsFetching] = useState('');
+  const [tweetEnd, setTweetEnd] = useState('');
   const ref = useRef();
 
   // Check if user is logged in
@@ -75,6 +77,7 @@ function Home() {
   }, []);
 
   async function nextTweets() {
+    setTweetEnd('');
     setIsLoading(true);
     console.log(lastVisible);
     console.log(tweets);
@@ -87,15 +90,20 @@ function Home() {
     );
     const data = await getDocs(tweetQuery);
     console.log(data);
-    if (!data.empty) {
-      const newTweets = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setTweets((prev) => {
-        return [...prev, ...newTweets];
-      });
+    if (data.empty) {
+      console.log('no more tweets!');
+      setIsLoading(false);
+      setIsFetching(false);
+      setTweetEnd('No more tweets to show!');
+      return;
     }
+    const newTweets = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setTweets((prev) => {
+      return [...prev, ...newTweets];
+    });
     if (data?.docs[data.docs.length - 1]) {
       setLastVisible(data.docs[data.docs.length - 1]);
     }
@@ -104,17 +112,14 @@ function Home() {
   }
 
   return (
-    <div
-      // ref={ref}
-      className="container d-flex flex-column align-items-center my-4"
-    >
+    <div className="container d-flex flex-column align-items-center my-4">
       <TweetCreate />
       <TweetList
         onFetchMore={nextTweets}
         isFetching={isFetching}
         setIsFetching={setIsFetching}
+        tweetEnd={tweetEnd}
       />
-      {/* <Button onClick={nextTweets}>More</Button> */}
     </div>
   );
 }

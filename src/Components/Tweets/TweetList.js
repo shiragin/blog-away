@@ -1,12 +1,12 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { useMainContext } from '../../lib/MainContext';
+import { Spinner } from 'react-bootstrap';
 import Tweet from './Tweet';
 import './TweetList.css';
 
-function TweetList({ isFetching, setIsFetching, onFetchMore }) {
+function TweetList({ isFetching, setIsFetching, onFetchMore, tweetEnd }) {
   const { tweets } = useMainContext();
-  const listInnerRef = useRef();
 
   useEffect(() => {
     if (!isFetching) return;
@@ -16,7 +16,7 @@ function TweetList({ isFetching, setIsFetching, onFetchMore }) {
   function handleScroll() {
     if (
       window.innerHeight + document.documentElement.scrollTop <
-      document.documentElement.offsetHeight - 1
+      document.documentElement.offsetHeight - 0.5
     )
       return;
     setIsFetching(true);
@@ -35,6 +35,20 @@ function TweetList({ isFetching, setIsFetching, onFetchMore }) {
           <Tweet key={id ? id : nanoid()} value={{ user, date, id, content }} />
         );
       })}
+      {/* {isFetching && (
+        <Spinner animation="border" variant="primary" className="my-2" />
+      )} */}
+      {tweetEnd && <div className="tweet-end">{tweetEnd}</div>}
+      <div className="d-flex justify-content-center">
+        {tweetEnd ||
+          (isFetching && (
+            <Spinner
+              animation="border"
+              variant="primary"
+              className="tweet-spinner my-2"
+            />
+          ))}
+      </div>
     </div>
   );
 }
