@@ -5,27 +5,26 @@ import { Spinner } from 'react-bootstrap';
 import Tweet from './Tweet';
 import './TweetList.css';
 
-function TweetList({ isFetching, setIsFetching, onFetchMore, tweetEnd }) {
-  const { tweets } = useMainContext();
+function TweetList() {
+  const {
+    tweets,
+    isFetching,
+    setIsFetching,
+    tweetEnd,
+    nextTweets,
+    handleScroll,
+  } = useMainContext();
 
   useEffect(() => {
     if (!isFetching) return;
-    onFetchMore();
+    nextTweets();
   }, [isFetching]);
-
-  function handleScroll() {
-    if (
-      window.innerHeight + document.documentElement.scrollTop <
-      document.documentElement.offsetHeight - 0.5
-    )
-      return;
-    setIsFetching(true);
-    console.log('bottom');
-  }
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      if (tweetEnd) window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
@@ -35,19 +34,11 @@ function TweetList({ isFetching, setIsFetching, onFetchMore, tweetEnd }) {
           <Tweet key={id ? id : nanoid()} value={{ user, date, id, content }} />
         );
       })}
-      {/* {isFetching && (
-        <Spinner animation="border" variant="primary" className="my-2" />
-      )} */}
-      {tweetEnd && <div className="tweet-end">{tweetEnd}</div>}
-      <div className="d-flex justify-content-center">
+      {tweetEnd !== '' && <div className="tweet-end">{tweetEnd}</div>}
+      <div className="tweet-end d-flex justify-content-center">
+        {tweetEnd && 'No more tweets to show!'}
         {tweetEnd ||
-          (isFetching && (
-            <Spinner
-              animation="border"
-              variant="primary"
-              className="tweet-spinner my-2"
-            />
-          ))}
+          (isFetching && <Spinner animation="border" variant="primary" />)}
       </div>
     </div>
   );

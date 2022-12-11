@@ -2,8 +2,13 @@ import { createContext, useContext, useState } from 'react';
 import {
   collection,
   doc,
+  query,
+  orderBy,
+  startAfter,
+  limit,
   setDoc,
   getDoc,
+  getDocs,
   addDoc,
   updateDoc,
 } from 'firebase/firestore';
@@ -25,6 +30,9 @@ export default function MainContextProvider({ children }) {
   const [userName, setUserName] = useState('');
   const [savedName, setSavedName] = useState('');
   const [userImg, setUserImg] = useState('');
+  const [lastVisible, setLastVisible] = useState('');
+  const [isFetching, setIsFetching] = useState('');
+  const [tweetEnd, setTweetEnd] = useState(false);
 
   // Saves new tweet to server
   async function tweetSaveHandler(newTweet) {
@@ -97,6 +105,47 @@ export default function MainContextProvider({ children }) {
     }
   }
 
+  // Get next tweets from the db
+  async function nextTweets() {
+    setIsLoading(true);
+    const tweetsRef = collection(db, 'tweets');
+    const tweetQuery = query(
+      tweetsRef,
+      orderBy('date', 'desc'),
+      startAfter(lastVisible),
+      limit(10)
+    );
+    const data = await getDocs(tweetQuery);
+    if (data.empty) {
+      window.removeEventListener('scroll', handleScroll);
+      setIsLoading(false);
+      setIsFetching(false);
+      setTweetEnd(true);
+      return;
+    }
+    const newTweets = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setTweets((prev) => {
+      return [...prev, ...newTweets];
+    });
+    if (data?.docs[data.docs.length - 1]) {
+      setLastVisible(data.docs[data.docs.length - 1]);
+    }
+    setIsLoading(false);
+    setIsFetching(false);
+  }
+
+  function handleScroll() {
+    if (
+      window.innerHeight + document.documentElement.scrollTop <
+      document.documentElement.offsetHeight - 0.5
+    )
+      return;
+    setIsFetching(true);
+  }
+
   return (
     <MainContext.Provider
       value={{
@@ -121,6 +170,14 @@ export default function MainContextProvider({ children }) {
         updateUserProfile,
         getSavedProfile,
         addNewUser,
+        lastVisible,
+        setLastVisible,
+        isFetching,
+        setIsFetching,
+        tweetEnd,
+        setTweetEnd,
+        nextTweets,
+        handleScroll,
       }}
     >
       {children}
