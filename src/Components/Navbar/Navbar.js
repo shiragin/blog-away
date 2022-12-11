@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, Link, NavLink } from 'react-router-dom';
 import { useMainContext } from '../../lib/MainContext';
 import { auth } from '../../lib/Firebase';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import './Navbar.css';
 
 function Navbar() {
@@ -48,28 +49,39 @@ function Navbar() {
             </NavLink>
           </li>
         </div>
-        <div className="d-flex justify-content-start gap-5">
+        <div className="navbar-right d-flex justify-content-start gap-5">
           {loggedIn && savedName && (
             <li className="navbar-link">
               Logged in as <span className="navbar-name">{savedName}</span>
             </li>
           )}
-          <li className="navbar-link">
-            <NavLink onClick={() => setFilterTweets(!filterTweets)}>
-              {filterTweets ? 'Show all tweets' : 'Show my tweets'}
-            </NavLink>
-          </li>
-          <li className="navbar-link">
-            <NavLink
-              to="/"
-              onClick={() => {
-                setSavedName('');
-                signOut(auth);
-              }}
-            >
-              Sign Out
-            </NavLink>
-          </li>
+          <NavDropdown title="Options ">
+            <NavDropdown.Item as="li" className="navbar-link">
+              <NavLink onClick={() => setFilterTweets(!filterTweets)}>
+                {filterTweets ? 'Show all tweets' : 'Show my tweets'}
+              </NavLink>
+            </NavDropdown.Item>
+            <NavDropdown.Item as="li">
+              <NavLink
+                onClick={(e) => !loggedIn && e.preventDefault()}
+                to="/profile"
+              >
+                Profile
+              </NavLink>
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item as="li" className="navbar-link">
+              <NavLink
+                to="/"
+                onClick={() => {
+                  setSavedName('');
+                  signOut(auth);
+                }}
+              >
+                Sign Out
+              </NavLink>
+            </NavDropdown.Item>
+          </NavDropdown>
         </div>
       </ul>
       <Outlet />
