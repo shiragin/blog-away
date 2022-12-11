@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { nanoid } from 'nanoid';
+import { v4 } from 'uuid';
 import { useTweetContext } from '../../lib/TweetContext';
 import { Spinner } from 'react-bootstrap';
 import Tweet from './Tweet';
@@ -32,7 +32,7 @@ function TweetList() {
       {tweets.map(({ id, user, date, content }) => {
         return (
           <Tweet
-            key={id ? id : nanoid()}
+            key={id ? id : v4()}
             value={{ user, date, id, content, filterTweets }}
           />
         );

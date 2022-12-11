@@ -37,7 +37,7 @@ function TweetCreate() {
     const newTweet = {
       user: user,
       content: tweet,
-      date: moment().format('ddd MMMM Do, YYYY HH:mm:ss'),
+      date: new Date().toLocaleString('en-GB'),
     };
     onTweetSave(newTweet);
     setTweets([newTweet, ...tweets]);
