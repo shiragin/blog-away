@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { v4 } from 'uuid';
 import { useTweetContext } from '../../lib/TweetContext';
 import { Spinner } from 'react-bootstrap';
@@ -46,4 +46,4 @@ function TweetList() {
   );
 }
 
-export default TweetList;
+export default memo(TweetList);

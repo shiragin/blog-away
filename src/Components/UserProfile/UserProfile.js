@@ -10,6 +10,7 @@ import './UserProfile.css';
 
 function UserProfile() {
   const {
+    user,
     userName,
     setUserName,
     userImg,
@@ -31,7 +32,6 @@ function UserProfile() {
   // Sets new name (trimmed) locally and to server on change
   function buttonClickHandler() {
     const trimmed = userName.replaceAll(/\s+/g, ' ');
-    localStorage.setItem('username', JSON.stringify(trimmed));
     setUserName(trimmed);
     getImgurl();
     onProfileSave(trimmed, userImg);
@@ -39,11 +39,11 @@ function UserProfile() {
     getSavedProfile();
   }
 
-  // get the img url from storage
+  // get the img url and puts it in firebase storage
   function getImgurl() {
     if (uploadedImg === null) return;
 
-    const storageRef = ref(storage, `img/${uploadedImg.name + v4()}`);
+    const storageRef = ref(storage, `img/${user}/${uploadedImg.name + v4()}`);
     uploadBytes(storageRef, uploadedImg).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((downloadURL) => {
         setUserImg(downloadURL);
