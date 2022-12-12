@@ -28,6 +28,7 @@ export default function TweetContextProvider({ children }) {
   const [isFetching, setIsFetching] = useState('');
   const [tweetEnd, setTweetEnd] = useState(false);
   const [filterTweets, setFilterTweets] = useState(false);
+  const [search, setSearch] = useState('');
   const { user } = useUserContext();
 
   // Saves new tweet to server
@@ -114,6 +115,8 @@ export default function TweetContextProvider({ children }) {
         handleScroll,
         filterTweets,
         setFilterTweets,
+        search,
+        setSearch,
       }}
     >
       {children}

@@ -39,28 +39,32 @@ function Home() {
 
   // Call to tweets from firebase server w/ live update
   async function fetchData() {
-    const tweetsRef = collection(db, 'tweets');
-    const data = filterTweets
-      ? query(
-          tweetsRef,
-          where('user', '==', user),
-          orderBy('date', 'desc'),
-          limit(10)
-        )
-      : query(tweetsRef, orderBy('date', 'desc'), limit(10));
-    if (!data.empty) {
-      const unsubscribe = onSnapshot(data, (snapshot) => {
-        const newTweets = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setTweets(newTweets);
-        setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
-        setIsLoading(false);
-        return () => {
-          unsubscribe();
-        };
-      });
+    try {
+      const tweetsRef = collection(db, 'tweets');
+      const data = filterTweets
+        ? query(
+            tweetsRef,
+            where('user', '==', user),
+            orderBy('date', 'desc'),
+            limit(10)
+          )
+        : query(tweetsRef, orderBy('date', 'desc'), limit(10));
+      if (!data.empty) {
+        const unsubscribe = onSnapshot(data, (snapshot) => {
+          const newTweets = snapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          setTweets(newTweets);
+          setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
+          setIsLoading(false);
+          return () => {
+            unsubscribe();
+          };
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 

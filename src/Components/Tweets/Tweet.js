@@ -4,7 +4,7 @@ import { db } from '../../lib/Firebase';
 import anon from './anon.jpeg';
 
 function Tweet(props) {
-  const { user, date, content, id, filterTweets } = props.value;
+  const { user, date, content, id } = props.value;
   const userRef = doc(db, 'users', user);
 
   const [tweetUserName, setTweetUserName] = useState('');
@@ -23,13 +23,7 @@ function Tweet(props) {
     getUserName();
   }, []);
 
-  // console.log(JSON.parse('"2022-12-12T14:02:54.495Z"'));
-
-  // const newDate = JSON.stringify(new Date());
-  // console.log(newDate, new Date(JSON.parse(newDate)).toLocaleString('UK'));
-
   const formattedDate = new Date(JSON.parse(date)).toLocaleString('UK');
-  console.log(formattedDate);
 
   return (
     <div

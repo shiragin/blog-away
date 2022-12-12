@@ -50,3 +50,9 @@
 .tweet-spinner {
   justify-self: center;
 }
+
+@media (max-width: 480px) {
+  .tweet-date {
+    display: none;
+  }
+}
