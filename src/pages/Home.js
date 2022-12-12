@@ -49,7 +49,7 @@ function Home() {
         )
       : query(tweetsRef, orderBy('date', 'desc'), limit(10));
     if (!data.empty) {
-      onSnapshot(data, (snapshot) => {
+      const unsubscribe = onSnapshot(data, (snapshot) => {
         const newTweets = snapshot.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
@@ -57,6 +57,9 @@ function Home() {
         setTweets(newTweets);
         setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
         setIsLoading(false);
+        return () => {
+          unsubscribe();
+        };
       });
     }
   }
@@ -64,9 +67,6 @@ function Home() {
   useEffect(() => {
     setIsLoading(true);
     fetchData();
-    return () => {
-      // unsubscribe();
-    };
   }, []);
 
   useEffect(() => {

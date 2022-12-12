@@ -6,10 +6,12 @@ import './Login.css';
 function LoginForm({
   email,
   password,
+  passwordConfirm,
   setErrMsg,
   errMsg,
   setEmail,
   setPassword,
+  setPasswordConfirm,
   onSignup,
   onLogin,
   onGoogle,
@@ -38,7 +40,6 @@ function LoginForm({
             placeholder="Email Address"
           />
         </Form.Group>
-
         <Form.Group className="">
           <Form.Label className="password-label">Password</Form.Label>
           <Form.Control
@@ -54,7 +55,23 @@ function LoginForm({
             placeholder="Password"
           />
         </Form.Group>
-
+        {logType === 'signup' && (
+          <Form.Group className="">
+            <Form.Label className="password-label">Confirm Password</Form.Label>
+            <Form.Control
+              className="password-input last"
+              type="password"
+              label="Confirm password"
+              value={passwordConfirm}
+              onChange={(e) => {
+                setPasswordConfirm(e.target.value);
+                setErrMsg('');
+              }}
+              required
+              placeholder="Password"
+            />
+          </Form.Group>
+        )}
         <div className="login-links d-flex flex-column align-items-center">
           <div className="error-wrap">
             {errMsg && (

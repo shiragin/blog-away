@@ -18,6 +18,7 @@ function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [logType, setLogType] = useState('login');
   const { userName } = useUserContext();
@@ -49,6 +50,10 @@ function Login() {
 
   async function signupHandler(e) {
     e.preventDefault();
+    if (password !== passwordConfirm) {
+      setErrMsg(`Passwords don't match!`);
+      return;
+    }
     await createUserWithEmailAndPassword(auth, email, password)
       .then((user) => {
         const { email, uid } = user.user;
@@ -90,6 +95,8 @@ function Login() {
         setEmail={setEmail}
         password={password}
         setPassword={setPassword}
+        passwordConfirm={passwordConfirm}
+        setPasswordConfirm={setPasswordConfirm}
         setErrMsg={setErrMsg}
         errMsg={errMsg}
         onLogin={loginHandler}
