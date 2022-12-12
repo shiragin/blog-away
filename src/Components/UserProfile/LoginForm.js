@@ -1,6 +1,7 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Google } from 'react-bootstrap-icons';
+import { useUserContext } from '../../lib/UserContext';
 import './Login.css';
 
 function LoginForm({
@@ -15,9 +16,9 @@ function LoginForm({
   onSignup,
   onLogin,
   onGoogle,
-  logType,
-  setLogType,
 }) {
+  const { logType, setLogType } = useUserContext();
+
   return (
     <div className="login-container">
       <h1 className="login-title display-6">

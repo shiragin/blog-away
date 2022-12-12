@@ -23,11 +23,12 @@
 
 .navbar-link,
 .navbar-link a,
+li.navbar-link a,
 .navbar-link:visited,
 .navbar-link:visited a {
   list-style-type: none;
   text-decoration: none;
-  color: var(--offwhite);
+  color: var(--grey-text);
 }
 
 .navbar-link.active,
@@ -37,13 +38,19 @@
   color: var(--white);
 }
 
-.navbar-link a:hover {
-  border-bottom: 1px solid var(--blue);
+.navbar-link a:hover,
+.navbar-link.active a:hover {
+  /* border-bottom: 1px solid var(--blue); */
+  color: var(--blue) !important;
+}
+
+.navbar-link.name.disabled {
+  font-weight: 400;
+  color: var(--grey-text);
 }
 
 .navbar-name {
   font-weight: 600;
-  color: var(--white);
 }
 
 li.dropdown-item a,

@@ -8,8 +8,15 @@ import { useUserContext } from '../../lib/UserContext';
 function NavbarUnlogged() {
   const { filterTweets, setFilterTweets } = useTweetContext();
 
-  const { savedName, setSavedName, setUser, setUserName, setUserImg } =
-    useUserContext();
+  const {
+    savedName,
+    setSavedName,
+    setUser,
+    setUserName,
+    setUserImg,
+    logType,
+    setLogType,
+  } = useUserContext();
 
   return (
     <ul
@@ -22,6 +29,7 @@ function NavbarUnlogged() {
       <div className="d-flex justify-content-end align-items-center gap-5">
         <li className="navbar-link">
           <NavLink
+            onClick={() => setLogType('signup')}
             to="/login"
             style={({ isActive }) => ({
               color: isActive ? 'var(--white)' : 'var(--offwhite)',
@@ -32,6 +40,7 @@ function NavbarUnlogged() {
         </li>
         <li className="navbar-link">
           <NavLink
+            onClick={() => setLogType('login')}
             to="/login"
             style={({ isActive }) => ({
               color: isActive ? 'var(--white)' : 'var(--offwhite)',

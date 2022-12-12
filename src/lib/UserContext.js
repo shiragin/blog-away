@@ -13,6 +13,7 @@ export default function UserContextProvider({ children }) {
   const [userName, setUserName] = useState('');
   const [savedName, setSavedName] = useState('');
   const [userImg, setUserImg] = useState('');
+  const [logType, setLogType] = useState('login');
 
   // Saves new name/image upon change
   function profileSaveHandler(userName, userImg) {
@@ -75,6 +76,8 @@ export default function UserContextProvider({ children }) {
   return (
     <UserContext.Provider
       value={{
+        logType,
+        setLogType,
         setUser,
         user,
         userName,

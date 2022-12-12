@@ -23,6 +23,14 @@ function Tweet(props) {
     getUserName();
   }, []);
 
+  // console.log(JSON.parse('"2022-12-12T14:02:54.495Z"'));
+
+  // const newDate = JSON.stringify(new Date());
+  // console.log(newDate, new Date(JSON.parse(newDate)).toLocaleString('UK'));
+
+  const formattedDate = new Date(JSON.parse(date)).toLocaleString('UK');
+  console.log(formattedDate);
+
   return (
     <div
       key={id}
@@ -38,7 +46,7 @@ function Tweet(props) {
           />
           <p className="tweet-username">{tweetUserName}</p>
         </div>
-        <p className="tweet-date">{date}</p>
+        <p className="tweet-date">{formattedDate}</p>
       </div>
       <p className="tweet-text w-75">{content}</p>
     </div>

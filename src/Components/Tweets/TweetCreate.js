@@ -37,7 +37,7 @@ function TweetCreate() {
     const newTweet = {
       user: user,
       content: tweet,
-      date: new Date().toLocaleString('en-GB'),
+      date: JSON.stringify(new Date()),
     };
     onTweetSave(newTweet);
     setTweets([newTweet, ...tweets]);

@@ -20,7 +20,6 @@ function Login() {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [errMsg, setErrMsg] = useState('');
-  const [logType, setLogType] = useState('login');
   const { userName } = useUserContext();
 
   useEffect(() => {
@@ -102,8 +101,6 @@ function Login() {
         onLogin={loginHandler}
         onSignup={signupHandler}
         onGoogle={googleHandler}
-        logType={logType}
-        setLogType={setLogType}
       />
     </div>
   );

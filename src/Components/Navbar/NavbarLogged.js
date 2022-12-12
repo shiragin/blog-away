@@ -41,25 +41,23 @@ function NavbarLogged() {
           </NavLink>
         </li>
       </div>
+      <div>{/* <Input.Group></Input.Group> */}</div>
       <div className="navbar-right d-flex justify-content-start gap-5">
-        {savedName && (
-          <li className="navbar-link">
-            Logged in as <span className="navbar-name">{savedName}</span>
-          </li>
-        )}
         <NavDropdown title="Options ">
+          <NavDropdown.Item className="navbar-link name" disabled>
+            Logged in as
+            <span className="navbar-name">
+              {savedName ? ' ' + savedName : ' Anon'}
+            </span>
+          </NavDropdown.Item>
+          <NavDropdown.Divider />
           <NavDropdown.Item as="li" className="navbar-link">
             <NavLink onClick={() => setFilterTweets(!filterTweets)}>
               {filterTweets ? 'Show all tweets' : 'Show my tweets'}
             </NavLink>
           </NavDropdown.Item>
           <NavDropdown.Item as="li">
-            <NavLink
-              // onClick={(e) => !loggedIn && e.preventDefault()}
-              to="/profile"
-            >
-              Profile
-            </NavLink>
+            <NavLink to="/profile">Profile</NavLink>
           </NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item as="li" className="navbar-link">
