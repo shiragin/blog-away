@@ -15,7 +15,7 @@ function Searchbar() {
   function searchChange(e) {
     setSearch({
       type: search.type,
-      input: e.target.value.toLowerCase(),
+      input: e.target.value,
       on: true,
     });
   }

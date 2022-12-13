@@ -49,9 +49,22 @@ export default function TweetContextProvider({ children }) {
     }
   }
 
+  async function getSearchedUserID() {
+    const usersRef = collection(db, 'users');
+    console.log(search.input);
+    const usersQuery = query(usersRef, where('userName', '==', search.input));
+    const data = await getDocs(usersQuery);
+    console.log(data);
+    const searched = [];
+    data.forEach((doc) => {
+      console.log(doc.id, ' => ', doc.data());
+      searched.push(doc.id);
+    });
+    return searched[0];
+  }
+
   // Call to tweets from firebase server w/ live update
   async function fetchData() {
-    console.log(search);
     try {
       const tweetsRef = collection(db, 'tweets');
       let data;
@@ -63,10 +76,21 @@ export default function TweetContextProvider({ children }) {
           limit(10)
         );
       } else if (search.on) {
-        if (search.type === 'users') {
+        if (search.type === 'tweets') {
           data = query(
             tweetsRef,
-            where('user'.toLowerCase(), '==', search.input),
+            where('content', 'array-contains', search.input),
+            // where('content', '<=', search.input + '~'),
+            orderBy('content'),
+            orderBy('date', 'desc'),
+            limit(10)
+          );
+        } else if (search.type === 'users') {
+          const searchedID = await getSearchedUserID();
+          console.log('From Main:', searchedID);
+          data = query(
+            tweetsRef,
+            where('user', '==', searchedID),
             orderBy('date', 'desc'),
             limit(10)
           );
@@ -80,6 +104,7 @@ export default function TweetContextProvider({ children }) {
             ...doc.data(),
             id: doc.id,
           }));
+          console.log(newTweets);
           setTweets(newTweets);
           setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
           setIsLoading(false);

@@ -29,6 +29,7 @@ export default function UserContextProvider({ children }) {
       await updateDoc(userRef, {
         userName: userName,
         userImg: userImg,
+        id: user,
       });
     }
   }
@@ -69,7 +70,7 @@ export default function UserContextProvider({ children }) {
       setUserName('');
       setSavedName('');
       setUserImg('');
-      setDoc(doc(db, 'users', uid), { email, userName });
+      setDoc(doc(db, 'users', uid), { email, userName, uid });
     }
   }
 
