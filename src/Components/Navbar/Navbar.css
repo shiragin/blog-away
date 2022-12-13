@@ -23,9 +23,9 @@
 
 .navbar-link,
 .navbar-link a,
-li.navbar-link a,
+div.navbar-link a,
 .navbar-link:visited,
-.navbar-link:visited a {
+div.navbar-link:visited a {
   list-style-type: none;
   text-decoration: none;
   color: var(--grey-text);
@@ -38,17 +38,18 @@ li.navbar-link a,
   color: var(--white);
 }
 
-a.navbar-link img {
+div.navbar-link img {
   height: 2rem;
   width: 2rem;
   border-radius: 50%;
   margin: 0 1rem;
+  object-fit: cover;
 }
 
 .search-wrapper {
-  border: 0.05rem var(--offwhite) solid;
+  outline: 0.05rem var(--offwhite) solid;
+  outline-offset: -0.02rem;
   border-radius: 0.375rem;
-  /* min-width: 40%; */
 }
 
 .search-select {
@@ -60,7 +61,6 @@ a.navbar-link img {
 .searchbar:focus,
 .searchbar:focus-visible,
 .search-select {
-  /* border: 0.05rem var(--offwhite) solid !important; */
   background-color: var(--grey);
   color: var(--white);
   border: none;
@@ -68,26 +68,16 @@ a.navbar-link img {
   outline: none;
 }
 
-.input-group .search-button {
-  border: none;
-  color: var(--offwhite) !important;
-  transition: transform 0.2s ease-in-out;
-}
-
-.search-button:hover {
-  background-color: var(--grey) !important;
-  color: var(--white) !important;
-}
-
-.search-button:active {
-  transform: scale(0.8);
+.icon {
+  margin: 0 0.2rem 0 0.9rem;
 }
 
 .search-wrapper button.dropdown-toggle {
+  outline: 0.09rem #6c757d solid;
   color: var(--offwhite) !important;
-  /* border: 0.05rem var(--offwhite) solid !important; */
   text-align: right;
   min-width: 10rem;
+  border-radius: 0 0.375rem 0.375rem 0;
 }
 
 .navbar-link a:hover,
@@ -114,6 +104,10 @@ li.dropdown-item a:active {
 li.dropdown-item a:hover {
   border: none;
   color: var(--grey-text) !important;
+}
+
+div.nav-item.dropdown a.dropdown-toggle {
+  color: var(--offwhite);
 }
 
 div.nav-item.dropdown a:hover {

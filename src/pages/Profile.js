@@ -4,15 +4,26 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../lib/Firebase';
 import { useUserContext } from '../lib/UserContext';
 import UserProfile from '../Components/UserProfile/UserProfile';
+import { useTweetContext } from '../lib/TweetContext';
 
 function Profile() {
-  const { userImg, userName, profileSaveHandler } = useUserContext();
+  const {
+    user,
+    userImg,
+    userName,
+    profileSaveHandler,
+    addNewUser,
+    getSavedProfile,
+  } = useUserContext();
+
+  const { tweets } = useTweetContext;
 
   const navigate = useNavigate();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       !user && navigate('/login');
+      getSavedProfile(user);
     });
   }, []);
 

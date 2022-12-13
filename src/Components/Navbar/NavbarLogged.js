@@ -6,13 +6,21 @@ import { NavDropdown } from 'react-bootstrap';
 import Searchbar from './Searchbar';
 import { useTweetContext } from '../../lib/TweetContext';
 import { useUserContext } from '../../lib/UserContext';
+import anon from '../Tweets/anon.jpeg';
 
 function NavbarLogged() {
-  const { filterTweets, setFilterTweets, search, setSearch, fetchData } =
+  const { filterTweets, setFilterTweets, search, setSearch } =
     useTweetContext();
 
-  const { savedName, userImg, setSavedName, setUser, setUserName, setUserImg } =
-    useUserContext();
+  const {
+    savedName,
+    userImg,
+    setSavedName,
+    setUser,
+    setUserName,
+    userName,
+    setUserImg,
+  } = useUserContext();
 
   const [ImgLoading, setImgLoading] = useState(true);
 
@@ -23,7 +31,7 @@ function NavbarLogged() {
         background: filterTweets ? 'var(--grey-blue)' : 'var(--grey)',
       }}
     >
-      <div className="navbar-link d-flex align-items-center gap-5">
+      <div className="navbar-link d-flex align-items-center gap-4">
         <NavLink
           to="/"
           onClick={() => {
@@ -41,16 +49,23 @@ function NavbarLogged() {
           Profile
         </NavLink>
       </div>
-      <div className="navbar-right d-flex align-items-center justify-content-between gap-4">
-        <Searchbar />
-        <div className="d-flex align-items-center justify-content-between">
-          <NavLink className="navbar-link">
-            <img
-              src={userImg}
-              style={{ display: ImgLoading ? 'none' : 'block' }}
-              onLoad={() => setImgLoading(false)}
-            />
-          </NavLink>
+      <Searchbar />
+      <div className="d-flex align-items-center justify-content-between gap-3">
+        <div
+          className="logged-name"
+          style={{ display: ImgLoading ? 'none' : 'block' }}
+        >
+          Logged in as
+          <span className="navbar-name">
+            {userName ? ' ' + userName : ' Anon'}
+          </span>
+        </div>
+        <div className="navbar-link d-flex align-items-center">
+          <img
+            src={userImg || anon}
+            style={{ display: ImgLoading ? 'none' : 'block' }}
+            onLoad={() => setImgLoading(false)}
+          />
           <NavDropdown title="Options ">
             <NavDropdown.Item className="navbar-link name" disabled>
               Logged in as

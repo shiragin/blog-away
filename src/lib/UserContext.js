@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from './Firebase';
+import { auth, db } from './Firebase';
 
 export const UserContext = createContext();
 
@@ -36,11 +36,11 @@ export default function UserContextProvider({ children }) {
   }
 
   // gets the user's saved name from db
-  async function getSavedProfile() {
+  async function getSavedProfile(userid = '') {
+    if (!user) setUser(userid.uid);
     try {
-      const userRef = doc(db, 'users', user);
+      const userRef = doc(db, 'users', user || userid.uid);
       const userProfile = await getDoc(userRef);
-
       if (userProfile.exists()) {
         if (!userProfile.data()) return;
         const userImg = await userProfile?.data()?.userImg;

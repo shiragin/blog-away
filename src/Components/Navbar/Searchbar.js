@@ -31,20 +31,22 @@ function Searchbar() {
 
   return (
     <div className="d-flex search-wrapper">
-      <InputGroup>
+      <InputGroup className="d-flex align-items-center">
+        <Search size={16} className="icon" />
         <Form.Control
           className="searchbar"
           type="text"
+          value={search.input}
           placeholder="Search..."
           onChange={searchChange}
         />
-        <Button
+        {/* <Button
           className="search-button"
-          variant="outline-secondary"
+          variant="secondary"
           onClick={searchHandler}
         >
           <Search className="icon" />
-        </Button>
+        </Button> */}
       </InputGroup>
       <DropdownButton
         title={search.type === 'users' ? 'Search Users ' : 'Search Tweets '}
