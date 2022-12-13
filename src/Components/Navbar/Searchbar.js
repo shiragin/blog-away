@@ -21,7 +21,11 @@ function Searchbar() {
   }
 
   function searchHandler() {
-    setSearch({ type: search.type, input: search.input, on: true });
+    setSearch({
+      type: search.type,
+      input: search.input,
+      on: true,
+    });
     fetchData();
   }
 
