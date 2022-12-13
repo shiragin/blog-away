@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../lib/Firebase';
 import { NavLink } from 'react-router-dom';
@@ -11,6 +12,8 @@ function NavbarLogged() {
 
   const { savedName, userImg, setSavedName, setUser, setUserName, setUserImg } =
     useUserContext();
+
+  const [ImgLoading, setImgLoading] = useState(true);
 
   return (
     <div
@@ -36,7 +39,11 @@ function NavbarLogged() {
         <Searchbar />
         <div className="d-flex align-items-center justify-content-between">
           <NavLink className="navbar-link">
-            <img src={userImg} />
+            <img
+              src={userImg}
+              style={{ display: ImgLoading ? 'none' : 'block' }}
+              onLoad={() => setImgLoading(false)}
+            />
           </NavLink>
           <NavDropdown title="Options ">
             <NavDropdown.Item className="navbar-link name" disabled>

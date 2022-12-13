@@ -51,7 +51,6 @@ export default function TweetContextProvider({ children }) {
 
   async function getSearchedUserID() {
     const usersRef = collection(db, 'users');
-    console.log(search.input);
     const usersQuery = query(usersRef, where('userName', '==', search.input));
     const data = await getDocs(usersQuery);
     console.log(data);
@@ -63,11 +62,21 @@ export default function TweetContextProvider({ children }) {
     return searched[0];
   }
 
+  // if (search.type === 'tweets') {
+  //   data = query(
+  //     tweetsRef,
+  //     where('content', 'array-contains', search.input),
+  //     // where('content', '<=', search.input + '~'),
+  //     orderBy('content'),
+  //     orderBy('date', 'desc'),
+  //     limit(10)
+  //   );
+
   // Call to tweets from firebase server w/ live update
   async function fetchData() {
     try {
       const tweetsRef = collection(db, 'tweets');
-      let data;
+      let data = '';
       if (filterTweets) {
         data = query(
           tweetsRef,
@@ -76,18 +85,8 @@ export default function TweetContextProvider({ children }) {
           limit(10)
         );
       } else if (search.on) {
-        if (search.type === 'tweets') {
-          data = query(
-            tweetsRef,
-            where('content', 'array-contains', search.input),
-            // where('content', '<=', search.input + '~'),
-            orderBy('content'),
-            orderBy('date', 'desc'),
-            limit(10)
-          );
-        } else if (search.type === 'users') {
+        if (search.type === 'users') {
           const searchedID = await getSearchedUserID();
-          console.log('From Main:', searchedID);
           data = query(
             tweetsRef,
             where('user', '==', searchedID),
@@ -98,22 +97,26 @@ export default function TweetContextProvider({ children }) {
       } else {
         data = query(tweetsRef, orderBy('date', 'desc'), limit(10));
       }
-      if (!data.empty) {
-        const unsubscribe = onSnapshot(data, (snapshot) => {
-          const newTweets = snapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }));
-          console.log(newTweets);
-          setTweets(newTweets);
-          setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
-          setIsLoading(false);
-          setSearch({ type: search.type, input: search.input, on: false });
-          return () => {
-            unsubscribe();
-          };
-        });
+      if (!data) {
+        setError('No tweets to show!');
+        return;
       }
+      const unsubscribe = onSnapshot(data, (snapshot) => {
+        const newTweets = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        console.log(newTweets);
+        setTweets(newTweets);
+        if (newTweets.length < 10) setTweetEnd(true);
+        setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
+        console.log(lastVisible);
+        setIsLoading(false);
+        setSearch({ type: search.type, input: search.input, on: false });
+        return () => {
+          unsubscribe();
+        };
+      });
     } catch (error) {
       console.error(error);
     }
@@ -121,23 +124,43 @@ export default function TweetContextProvider({ children }) {
 
   // Get next tweets from the db
   async function nextTweets() {
+    if (tweetEnd) {
+      setIsLoading(false);
+      setIsFetching(false);
+      return;
+    }
     setIsLoading(true);
     const tweetsRef = collection(db, 'tweets');
-    const tweetQuery = filterTweets
-      ? query(
+    let tweetQuery;
+    if (filterTweets) {
+      tweetQuery = query(
+        tweetsRef,
+        where('user', '==', user),
+        orderBy('date', 'desc'),
+        startAfter(lastVisible),
+        limit(10)
+      );
+    } else if (search.on) {
+      if (search.type === 'users') {
+        const searchedID = await getSearchedUserID();
+        tweetQuery = query(
           tweetsRef,
-          where('user', '==', user),
-          orderBy('date', 'desc'),
-          startAfter(lastVisible),
-          limit(10)
-        )
-      : query(
-          tweetsRef,
+          where('user', '==', searchedID),
           orderBy('date', 'desc'),
           startAfter(lastVisible),
           limit(10)
         );
+      }
+    } else {
+      tweetQuery = query(
+        tweetsRef,
+        orderBy('date', 'desc'),
+        startAfter(lastVisible),
+        limit(10)
+      );
+    }
     const data = await getDocs(tweetQuery);
+    console.log(data);
     if (data.empty) {
       window.removeEventListener('scroll', handleScroll);
       setIsLoading(false);
