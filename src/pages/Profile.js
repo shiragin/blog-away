@@ -4,19 +4,10 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../lib/Firebase';
 import { useUserContext } from '../lib/UserContext';
 import UserProfile from '../Components/UserProfile/UserProfile';
-import { useTweetContext } from '../lib/TweetContext';
 
 function Profile() {
-  const {
-    user,
-    userImg,
-    userName,
-    profileSaveHandler,
-    addNewUser,
-    getSavedProfile,
-  } = useUserContext();
-
-  const { tweets } = useTweetContext;
+  const { userImg, userName, profileSaveHandler, getSavedProfile } =
+    useUserContext();
 
   const navigate = useNavigate();
 

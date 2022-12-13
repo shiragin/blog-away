@@ -1,32 +1,27 @@
-import {
-  InputGroup,
-  Form,
-  Dropdown,
-  DropdownButton,
-  Button,
-} from 'react-bootstrap';
+import { InputGroup, Form, Dropdown, DropdownButton } from 'react-bootstrap';
 import './Navbar.css';
 import { useTweetContext } from '../../lib/TweetContext';
 import { Search } from 'react-bootstrap-icons';
 
 function Searchbar() {
-  const { search, setSearch, fetchData } = useTweetContext();
+  const {
+    search,
+    setSearch,
+    fetchData,
+    getSearchedUserTweets,
+    setLastVisible,
+  } = useTweetContext();
 
-  function searchChange(e) {
-    setSearch({
+  async function searchChange(e) {
+    await setSearch({
       type: search.type,
       input: e.target.value,
       on: true,
     });
-  }
-
-  function searchHandler() {
-    setSearch({
-      type: search.type,
-      input: search.input,
-      on: true,
-    });
-    fetchData();
+    setLastVisible('');
+    search.type === 'users'
+      ? getSearchedUserTweets(e.target.value)
+      : getSearchedUserTweets(e.target.value);
   }
 
   return (
@@ -40,13 +35,6 @@ function Searchbar() {
           placeholder="Search..."
           onChange={searchChange}
         />
-        {/* <Button
-          className="search-button"
-          variant="secondary"
-          onClick={searchHandler}
-        >
-          <Search className="icon" />
-        </Button> */}
       </InputGroup>
       <DropdownButton
         title={search.type === 'users' ? 'Search Users ' : 'Search Tweets '}

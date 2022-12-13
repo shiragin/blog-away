@@ -49,26 +49,45 @@ export default function TweetContextProvider({ children }) {
     }
   }
 
-  // gets userID from searched userName
-  async function getSearchedUserID() {
+  // gets userID from searched userName and filter tweets by it
+  async function getSearchedUserTweets(value) {
     const usersRef = collection(db, 'users');
-    const usersQuery = query(
-      usersRef,
-      where('userNameLower', '==', search.input.toLowerCase())
-    );
-    const data = await getDocs(usersQuery);
+    const tweetsRef = collection(db, 'tweets');
     const searched = [];
-    data.forEach((doc) => {
-      searched.push(doc.id);
+    if (search.type === 'users') {
+      const usersQuery = query(
+        usersRef,
+        where('userNameLower', '>=', value.toLowerCase()),
+        where('userNameLower', '<=', value.toLowerCase() + '\uf8ff')
+      );
+      const dataID = await getDocs(usersQuery);
+      dataID.forEach((doc) => {
+        searched.push(doc.id);
+      });
+    }
+    console.log(searched);
+    const dataTweets = query(tweetsRef, orderBy('date', 'desc'));
+    if (!dataTweets) {
+      setIsLoading(false);
+      return;
+    }
+    onSnapshot(dataTweets, (snapshot) => {
+      let newTweets = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      newTweets =
+        search.type === 'users'
+          ? newTweets.filter((tweet) => searched.includes(tweet.user))
+          : newTweets.filter((tweet) =>
+              tweet.content.toLowerCase().includes(value.toLowerCase())
+            );
+      setTweets(newTweets);
     });
-    return searched[0] || '';
   }
 
   // Call to tweets from firebase server w/ live update
-  async function fetchData() {
-    let searchedID;
-    if (search.on && search.type === 'users')
-      searchedID = await getSearchedUserID();
+  async function fetchData(value = '') {
     try {
       const tweetsRef = collection(db, 'tweets');
       const data = filterTweets
@@ -88,17 +107,11 @@ export default function TweetContextProvider({ children }) {
           ...doc.data(),
           id: doc.id,
         }));
-        if (search.on && search.type === 'tweets') {
-          newTweets = newTweets.filter((tweet) =>
-            tweet.content.toLowerCase().includes(search.input.toLowerCase())
-          );
-        }
-        if (search.on && search.type === 'users') {
-          if (search.input)
-            newTweets = newTweets.filter((tweet) => {
-              return tweet.user === searchedID;
-            });
-        }
+        // if (search.on && search.type === 'tweets') {
+        //   newTweets = newTweets.filter((tweet) =>
+        //     tweet.content.toLowerCase().includes(value.toLowerCase())
+        //   );
+        // }
         setTweets(newTweets);
         setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
         setIsLoading(false);
@@ -113,14 +126,8 @@ export default function TweetContextProvider({ children }) {
 
   // Get next tweets from the db
   async function nextTweets() {
-    let searchedID;
     if (search.on && search.type === 'users')
-      searchedID = await getSearchedUserID();
-    if (tweetEnd) {
-      setIsLoading(false);
-      setIsFetching(false);
-      return;
-    }
+      getSearchedUserTweets(search.input);
     setIsLoading(true);
     const tweetsRef = collection(db, 'tweets');
     const tweetQuery = filterTweets
@@ -153,12 +160,6 @@ export default function TweetContextProvider({ children }) {
       newTweets = newTweets.filter((tweet) =>
         tweet.content.toLowerCase().includes(search.input.toLowerCase())
       );
-    }
-    if (search.on && search.type === 'users') {
-      if (search.input)
-        newTweets = newTweets.filter((tweet) => {
-          return tweet.user === searchedID;
-        });
     }
     setTweets((prev) => {
       return [...prev, ...newTweets];
@@ -204,6 +205,7 @@ export default function TweetContextProvider({ children }) {
         search,
         setSearch,
         fetchData,
+        getSearchedUserTweets,
       }}
     >
       {children}
