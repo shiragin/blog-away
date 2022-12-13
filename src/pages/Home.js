@@ -3,27 +3,29 @@ import { useUserContext } from '../lib/UserContext';
 import { useTweetContext } from '../lib/TweetContext';
 import TweetCreate from '../Components/Tweets/TweetCreate';
 import TweetList from '../Components/Tweets/TweetList';
-import {
-  collection,
-  query,
-  onSnapshot,
-  orderBy,
-  limit,
-  where,
-} from 'firebase/firestore';
+// import {
+//   collection,
+//   query,
+//   onSnapshot,
+//   orderBy,
+//   limit,
+//   where,
+// } from 'firebase/firestore';
 import { auth } from '../lib/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { db } from '../lib/Firebase';
+// import { db } from '../lib/Firebase';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const {
     tweets,
-    setTweets,
+    // setTweets,
     setIsLoading,
-    setLastVisible,
+    // setLastVisible,
     filterTweets,
     fetchData,
+    search,
+    setSearch,
   } = useTweetContext();
 
   const { user, getSavedProfile, addNewUser } = useUserContext();
@@ -47,6 +49,11 @@ function Home() {
     setIsLoading(true);
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchData();
+  }, [search]);
 
   useEffect(() => {
     setIsLoading(true);

@@ -8,7 +8,8 @@ import { useTweetContext } from '../../lib/TweetContext';
 import { useUserContext } from '../../lib/UserContext';
 
 function NavbarLogged() {
-  const { filterTweets, setFilterTweets } = useTweetContext();
+  const { filterTweets, setFilterTweets, search, setSearch, fetchData } =
+    useTweetContext();
 
   const { savedName, userImg, setSavedName, setUser, setUserName, setUserImg } =
     useUserContext();
@@ -23,7 +24,12 @@ function NavbarLogged() {
       }}
     >
       <div className="navbar-link d-flex align-items-center gap-5">
-        <NavLink to="/">
+        <NavLink
+          to="/"
+          onClick={() => {
+            setSearch({ type: search.type, input: search.input, on: false });
+          }}
+        >
           <div className="navbar-title">BLOG AWAY</div>
         </NavLink>
         <NavLink

@@ -51,15 +51,16 @@ export default function TweetContextProvider({ children }) {
 
   async function getSearchedUserID() {
     const usersRef = collection(db, 'users');
-    const usersQuery = query(usersRef, where('userName', '==', search.input));
+    const usersQuery = query(
+      usersRef,
+      where('userNameLower', '==', search.input.toLowerCase())
+    );
     const data = await getDocs(usersQuery);
-    console.log(data);
     const searched = [];
     data.forEach((doc) => {
-      console.log(doc.id, ' => ', doc.data());
       searched.push(doc.id);
     });
-    return searched[0];
+    return searched[0] || '';
   }
 
   // if (search.type === 'tweets') {
@@ -87,6 +88,11 @@ export default function TweetContextProvider({ children }) {
       } else if (search.on) {
         if (search.type === 'users') {
           const searchedID = await getSearchedUserID();
+          console.log(searchedID);
+          if (!searchedID) {
+            setIsLoading(false);
+            return;
+          }
           data = query(
             tweetsRef,
             where('user', '==', searchedID),
@@ -98,7 +104,7 @@ export default function TweetContextProvider({ children }) {
         data = query(tweetsRef, orderBy('date', 'desc'), limit(10));
       }
       if (!data) {
-        setError('No tweets to show!');
+        setIsLoading(false);
         return;
       }
       const unsubscribe = onSnapshot(data, (snapshot) => {
@@ -106,13 +112,9 @@ export default function TweetContextProvider({ children }) {
           ...doc.data(),
           id: doc.id,
         }));
-        console.log(newTweets);
         setTweets(newTweets);
-        if (newTweets.length < 10) setTweetEnd(true);
         setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
-        console.log(lastVisible);
         setIsLoading(false);
-        setSearch({ type: search.type, input: search.input, on: false });
         return () => {
           unsubscribe();
         };

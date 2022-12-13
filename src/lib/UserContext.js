@@ -28,6 +28,7 @@ export default function UserContextProvider({ children }) {
     if (userRef) {
       await updateDoc(userRef, {
         userName: userName,
+        userNameLower: userName.toLowerCase(),
         userImg: userImg,
         id: user,
       });

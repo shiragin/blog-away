@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { CheckCircle } from 'react-bootstrap-icons';
 import './UserProfile.css';
+import anon from '../Tweets/anon.jpeg';
 
 function UserProfile() {
   const {
@@ -56,7 +57,7 @@ function UserProfile() {
 
   return (
     <Form className="name-form w-75 d-flex flex-column">
-      <img className="profile-img align-self-center" src={userImg} />
+      <img className="profile-img align-self-center" src={userImg || anon} />
       <h1 className="name-title display-6 align-self-center mt-3">Profile</h1>
       <Form.Group className="form-group">
         <Form.Label className="name-label">User Name</Form.Label>
