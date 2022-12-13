@@ -41,6 +41,7 @@ function NavbarLogged() {
           <div className="navbar-title">BLOG AWAY</div>
         </NavLink>
         <NavLink
+          className="profile"
           to="/profile"
           style={({ isActive }) => ({
             color: isActive ? 'var(--white)' : 'var(--offwhite)',
@@ -51,10 +52,7 @@ function NavbarLogged() {
       </div>
       <Searchbar />
       <div className="d-flex align-items-center justify-content-between gap-3">
-        <div
-          className="logged-name"
-          style={{ display: ImgLoading ? 'none' : 'block' }}
-        >
+        <div className="logged-name" style={{ display: ImgLoading && 'none' }}>
           Logged in as
           <span className="navbar-name">
             {userName ? ' ' + userName : ' Anon'}

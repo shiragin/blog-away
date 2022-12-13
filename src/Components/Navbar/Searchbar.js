@@ -2,7 +2,6 @@ import { InputGroup, Form, Dropdown, DropdownButton } from 'react-bootstrap';
 import './Navbar.css';
 import { useTweetContext } from '../../lib/TweetContext';
 import { Search } from 'react-bootstrap-icons';
-import { useEffect } from 'react';
 
 function Searchbar() {
   const { search, setSearch, getSearchedUserTweets } = useTweetContext();
