@@ -2,23 +2,12 @@ import { InputGroup, Form, Dropdown, DropdownButton } from 'react-bootstrap';
 import './Navbar.css';
 import { useTweetContext } from '../../lib/TweetContext';
 import { Search } from 'react-bootstrap-icons';
+import { useEffect } from 'react';
 
 function Searchbar() {
-  const {
-    search,
-    setSearch,
-    fetchData,
-    getSearchedUserTweets,
-    setLastVisible,
-  } = useTweetContext();
+  const { search, setSearch, getSearchedUserTweets } = useTweetContext();
 
-  async function searchChange(e) {
-    await setSearch({
-      type: search.type,
-      input: e.target.value,
-      on: true,
-    });
-    setLastVisible('');
+  function searchChange(e) {
     search.type === 'users'
       ? getSearchedUserTweets(e.target.value)
       : getSearchedUserTweets(e.target.value);
@@ -31,7 +20,6 @@ function Searchbar() {
         <Form.Control
           className="searchbar"
           type="text"
-          value={search.input}
           placeholder="Search..."
           onChange={searchChange}
         />
@@ -43,17 +31,13 @@ function Searchbar() {
       >
         <Dropdown.Item
           href="#"
-          onClick={() =>
-            setSearch({ type: 'users', input: search.input, on: search.on })
-          }
+          onClick={() => setSearch({ type: 'users', on: search.on })}
         >
           Search Users
         </Dropdown.Item>
         <Dropdown.Item
           href="#"
-          onClick={() =>
-            setSearch({ type: 'tweets', input: search.input, on: search.on })
-          }
+          onClick={() => setSearch({ type: 'tweets', on: search.on })}
         >
           Search Tweets
         </Dropdown.Item>

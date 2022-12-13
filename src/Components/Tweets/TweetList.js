@@ -16,12 +16,12 @@ function TweetList() {
   } = useTweetContext();
 
   useEffect(() => {
-    if (!isFetching) return;
+    if (!isFetching || tweetEnd) return;
     nextTweets();
   }, [isFetching]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    if (!tweetEnd) window.addEventListener('scroll', handleScroll);
     return () => {
       if (tweetEnd) window.removeEventListener('scroll', handleScroll);
     };

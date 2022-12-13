@@ -8,7 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
-  const { tweets, setIsLoading, filterTweets, fetchData, search } =
+  const { tweets, setIsLoading, filterTweets, fetchData, search, setSearch } =
     useTweetContext();
 
   const { user, getSavedProfile, addNewUser } = useUserContext();

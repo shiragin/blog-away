@@ -92,6 +92,11 @@ div.navbar-link img {
   color: var(--grey-text);
 }
 
+.input-group {
+  background-color: var(--grey);
+  border-radius: 0.375rem 0 0 0.375rem;
+}
+
 .navbar-name {
   font-weight: 600;
 }

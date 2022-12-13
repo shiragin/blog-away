@@ -31,7 +31,6 @@ export default function TweetContextProvider({ children }) {
   const [filterTweets, setFilterTweets] = useState(false);
   const [search, setSearch] = useState({
     type: 'tweets',
-    input: '',
     on: false,
   });
   const { user } = useUserContext();
@@ -49,7 +48,7 @@ export default function TweetContextProvider({ children }) {
     }
   }
 
-  // gets userID from searched userName and filter tweets by it
+  // gets userID from searched userName and filter tweets by it or by content (depends of user request)
   async function getSearchedUserTweets(value) {
     const usersRef = collection(db, 'users');
     const tweetsRef = collection(db, 'tweets');
@@ -65,7 +64,6 @@ export default function TweetContextProvider({ children }) {
         searched.push(doc.id);
       });
     }
-    console.log(searched);
     const dataTweets = query(tweetsRef, orderBy('date', 'desc'));
     if (!dataTweets) {
       setIsLoading(false);
@@ -83,11 +81,13 @@ export default function TweetContextProvider({ children }) {
               tweet.content.toLowerCase().includes(value.toLowerCase())
             );
       setTweets(newTweets);
+      setIsLoading(false);
+      setTweetEnd(true);
     });
   }
 
   // Call to tweets from firebase server w/ live update
-  async function fetchData(value = '') {
+  async function fetchData() {
     try {
       const tweetsRef = collection(db, 'tweets');
       const data = filterTweets
@@ -107,11 +107,6 @@ export default function TweetContextProvider({ children }) {
           ...doc.data(),
           id: doc.id,
         }));
-        // if (search.on && search.type === 'tweets') {
-        //   newTweets = newTweets.filter((tweet) =>
-        //     tweet.content.toLowerCase().includes(value.toLowerCase())
-        //   );
-        // }
         setTweets(newTweets);
         setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
         setIsLoading(false);
@@ -156,11 +151,6 @@ export default function TweetContextProvider({ children }) {
       ...doc.data(),
       id: doc.id,
     }));
-    if (search.on && search.type === 'tweets') {
-      newTweets = newTweets.filter((tweet) =>
-        tweet.content.toLowerCase().includes(search.input.toLowerCase())
-      );
-    }
     setTweets((prev) => {
       return [...prev, ...newTweets];
     });
