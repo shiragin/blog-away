@@ -17,8 +17,14 @@ import { db } from '../lib/Firebase';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
-  const { tweets, setTweets, setIsLoading, setLastVisible, filterTweets } =
-    useTweetContext();
+  const {
+    tweets,
+    setTweets,
+    setIsLoading,
+    setLastVisible,
+    filterTweets,
+    fetchData,
+  } = useTweetContext();
 
   const { user, getSavedProfile, addNewUser } = useUserContext();
 
@@ -36,37 +42,6 @@ function Home() {
   useEffect(() => {
     if (user.length) getSavedProfile();
   }, [tweets]);
-
-  // Call to tweets from firebase server w/ live update
-  async function fetchData() {
-    try {
-      const tweetsRef = collection(db, 'tweets');
-      const data = filterTweets
-        ? query(
-            tweetsRef,
-            where('user', '==', user),
-            orderBy('date', 'desc'),
-            limit(10)
-          )
-        : query(tweetsRef, orderBy('date', 'desc'), limit(10));
-      if (!data.empty) {
-        const unsubscribe = onSnapshot(data, (snapshot) => {
-          const newTweets = snapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }));
-          setTweets(newTweets);
-          setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
-          setIsLoading(false);
-          return () => {
-            unsubscribe();
-          };
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   useEffect(() => {
     setIsLoading(true);

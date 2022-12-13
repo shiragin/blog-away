@@ -56,7 +56,8 @@ function UserProfile() {
 
   return (
     <Form className="name-form w-75 d-flex flex-column">
-      <h1 className="name-title display-6">Profile</h1>
+      <img className="profile-img align-self-center" src={userImg} />
+      <h1 className="name-title display-6 align-self-center mt-3">Profile</h1>
       <Form.Group className="form-group">
         <Form.Label className="name-label">User Name</Form.Label>
         <div className="name-input-box d-flex align-items-center justify-content-end gap-3">

@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from 'react';
 import {
   collection,
   query,
+  onSnapshot,
   orderBy,
   startAfter,
   limit,
@@ -28,7 +29,11 @@ export default function TweetContextProvider({ children }) {
   const [isFetching, setIsFetching] = useState('');
   const [tweetEnd, setTweetEnd] = useState(false);
   const [filterTweets, setFilterTweets] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState({
+    type: 'tweets',
+    input: '',
+    on: false,
+  });
   const { user } = useUserContext();
 
   // Saves new tweet to server
@@ -41,6 +46,51 @@ export default function TweetContextProvider({ children }) {
     } catch (error) {
       setError(error.message);
       setIsLoading(false);
+    }
+  }
+
+  // Call to tweets from firebase server w/ live update
+  async function fetchData() {
+    console.log(search);
+    try {
+      const tweetsRef = collection(db, 'tweets');
+      let data;
+      if (filterTweets) {
+        data = query(
+          tweetsRef,
+          where('user', '==', user),
+          orderBy('date', 'desc'),
+          limit(10)
+        );
+      } else if (search.on) {
+        if (search.type === 'users') {
+          data = query(
+            tweetsRef,
+            where('user'.toLowerCase(), '==', search.input),
+            orderBy('date', 'desc'),
+            limit(10)
+          );
+        }
+      } else {
+        data = query(tweetsRef, orderBy('date', 'desc'), limit(10));
+      }
+      if (!data.empty) {
+        const unsubscribe = onSnapshot(data, (snapshot) => {
+          const newTweets = snapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          setTweets(newTweets);
+          setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
+          setIsLoading(false);
+          setSearch({ type: search.type, input: search.input, on: false });
+          return () => {
+            unsubscribe();
+          };
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -117,6 +167,7 @@ export default function TweetContextProvider({ children }) {
         setFilterTweets,
         search,
         setSearch,
+        fetchData,
       }}
     >
       {children}

@@ -19,12 +19,19 @@ function NavbarLogged() {
         background: filterTweets ? 'var(--grey-blue)' : 'var(--grey)',
       }}
     >
-      <div className="navbar-link">
+      <div className="navbar-link d-flex align-items-center gap-5">
         <NavLink to="/">
           <div className="navbar-title">BLOG AWAY</div>
         </NavLink>
+        <NavLink
+          to="/profile"
+          style={({ isActive }) => ({
+            color: isActive ? 'var(--white)' : 'var(--offwhite)',
+          })}
+        >
+          Profile
+        </NavLink>
       </div>
-
       <div className="navbar-right d-flex align-items-center justify-content-between gap-4">
         <Searchbar />
         <div className="d-flex align-items-center justify-content-between">

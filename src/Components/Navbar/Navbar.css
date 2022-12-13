@@ -46,7 +46,7 @@ a.navbar-link img {
 }
 
 .search-wrapper {
-  /* border: 0.05rem var(--offwhite) solid; */
+  border: 0.05rem var(--offwhite) solid;
   border-radius: 0.375rem;
   /* min-width: 40%; */
 }
@@ -60,7 +60,7 @@ a.navbar-link img {
 .searchbar:focus,
 .searchbar:focus-visible,
 .search-select {
-  border: 0.05rem var(--offwhite) solid !important;
+  /* border: 0.05rem var(--offwhite) solid !important; */
   background-color: var(--grey);
   color: var(--white);
   border: none;
@@ -68,16 +68,31 @@ a.navbar-link img {
   outline: none;
 }
 
+.input-group .search-button {
+  border: none;
+  color: var(--offwhite) !important;
+  transition: transform 0.2s ease-in-out;
+}
+
+.search-button:hover {
+  background-color: var(--grey) !important;
+  color: var(--white) !important;
+}
+
+.search-button:active {
+  transform: scale(0.8);
+}
+
 .search-wrapper button.dropdown-toggle {
   color: var(--offwhite) !important;
-  border: 0.05rem var(--offwhite) solid !important;
+  /* border: 0.05rem var(--offwhite) solid !important; */
   text-align: right;
   min-width: 10rem;
 }
 
 .navbar-link a:hover,
 .navbar-link.active a:hover {
-  color: var(--blue) !important;
+  color: var(--white) !important;
 }
 
 .navbar-link.name.disabled {
@@ -98,6 +113,11 @@ li.dropdown-item a:active {
 
 li.dropdown-item a:hover {
   border: none;
+  color: var(--grey-text) !important;
+}
+
+div.nav-item.dropdown a:hover {
+  color: var(--white);
 }
 
 @media (max-width: 600px) {
