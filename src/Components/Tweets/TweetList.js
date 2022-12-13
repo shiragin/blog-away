@@ -15,6 +15,7 @@ function TweetList() {
     filterTweets,
   } = useTweetContext();
 
+  // Puts and removes event listener for fetching more tweets
   useEffect(() => {
     if (!isFetching || tweetEnd) return;
     nextTweets();

@@ -17,10 +17,6 @@
   font-weight: 400;
 }
 
-.active {
-  color: var(--white);
-}
-
 .navbar-link,
 .navbar-link a,
 div.navbar-link a,
@@ -121,7 +117,9 @@ div.nav-item.dropdown a:hover {
   color: var(--white);
 }
 
-@media (max-width: 1125px) {
+/* Media queries */
+
+@media (max-width: 1200px) {
   ul.navbar {
     flex-direction: column;
     justify-content: center;

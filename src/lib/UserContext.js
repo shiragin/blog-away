@@ -71,7 +71,12 @@ export default function UserContextProvider({ children }) {
       setUserName('');
       setSavedName('');
       setUserImg('');
-      setDoc(doc(db, 'users', uid), { email, userName, uid });
+      setDoc(doc(db, 'users', uid), {
+        email,
+        userName,
+        uid,
+        userNameLower: userName.toLowerCase(),
+      });
     }
   }
 

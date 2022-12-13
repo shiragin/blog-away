@@ -6,17 +6,32 @@ import { useUserContext } from '../lib/UserContext';
 import UserProfile from '../Components/UserProfile/UserProfile';
 
 function Profile() {
-  const { userImg, userName, profileSaveHandler, getSavedProfile } =
-    useUserContext();
+  const {
+    user,
+    userImg,
+    userName,
+    profileSaveHandler,
+    setUser,
+    getSavedProfile,
+  } = useUserContext();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       !user && navigate('/login');
-      getSavedProfile(user);
     });
   }, []);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) setUser(user.uid);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (user.length) getSavedProfile();
+  }, [user]);
 
   useEffect(() => {
     if (userImg) profileSaveHandler(userName, userImg);
